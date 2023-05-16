@@ -4,26 +4,31 @@
       <h1>☆ Lustiges Fachbegriffe-Lotto ☆</h1>
       <input id="file-input" type="file" @change="onFileSelected" />
     </header>
-    <button id="start" v-if="!started" @click="generateCombination">☆ START ☆</button>
-    <div v-else>
-      <button id="correct" @click="answerGiven(true)">Richtig</button>
-      <button id="wrong" @click="answerGiven(false)">Falsch</button>
-      <button id="solution" @click="toggleSolution">Lösung</button>
-    </div>
-    <p class="task">{{ currentCombination }}</p>
-    <p v-if="showSolution">{{ currentSolution }}</p>
-    <p v-if="allExpressionsUsed">All expressions have been used!</p>
-    <div v-if="allExpressionsUsed" id="count">
-      <div v-for="(count, name) in expressionCounts" :key="name">
-        {{ name }}: {{ count }}
+    <div v-if="!allExpressionsUsed && started">
+      <div v-if="currentCombination ">
+        <button id="correct" @click="answerGiven(true)">Richtig</button>
+        <button id="wrong" @click="answerGiven(false)">Falsch</button>
+        <button id="solution" @click="toggleSolution">Lösung</button>
       </div>
-      <button id="save" @click="saveFinalOverview">Save</button>
+      <p class="task">{{ currentCombination }}</p>
+      <p v-if="showSolution">{{ currentSolution }}</p>
+      <WeelOfFortune @selection="(msg)=>{disableWeel=true; generateCombination(msg)}" :disabled="disableWeel" />
+    </div>
+    <div v-else-if="started">
+      <p >All expressions have been used!</p>
+      <div id="count">
+        <div v-for="(count, name) in expressionCounts" :key="name">
+          {{ name }}: {{ count }}
+        </div>
+        <button id="save" @click="saveFinalOverview">Save</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import students from "@/data/students.json";
+import WeelOfFortune from "./components/WeelOfFortune.vue";
 const localStorageKey = process.env.LOCAL_STORAGE_KEY;
 export default {
   data() {
@@ -36,6 +41,8 @@ export default {
       started: false,
       showSolution: false,
       currentSolution: "",
+      currentStudent : {},
+      disableWeel: false,
     };
   },
   mounted() {
@@ -61,11 +68,11 @@ export default {
         this.expressions = data;
         this.usedExpressions = [];
         this.allExpressionsUsed = false;
-      };
+        this.startGame();
+      }
       reader.readAsText(file);
     },
-    generateCombination() {
-
+    startGame() {
       if (this.expressions.length === 0) {
         alert("No expressions loaded!");
         return;
@@ -73,11 +80,16 @@ export default {
       else {
         this.started = true;
       }
+      this.disableWeel;
+    },
+    generateCombination(student) {
+
       if (this.usedExpressions.length === this.expressions.length) {
         this.allExpressionsUsed = true;
         return;
       }
-      let randomStudent = students[Math.floor(Math.random() * students.length)];
+      let randomStudent = student || students[Math.floor(Math.random() * students.length)];
+      this.currentStudent = randomStudent;
       let randomExpression;
 
       do {
@@ -89,7 +101,7 @@ export default {
         return;
       }
       this.usedExpressions.push(randomExpression.expression);
-      this.currentCombination = `${randomStudent.firstName} ${randomStudent.lastName} - ${randomExpression.expression}`;
+      this.currentCombination = `${randomStudent.firstName} ${randomStudent.lastName} erklärt: ${randomExpression.expression}`;
       this.currentSolution = randomExpression.description_short;
       this.showSolution = false;
       return randomStudent;
@@ -100,7 +112,9 @@ export default {
     },
 
     answerGiven(correct) {
-      let randomStudent = this.generateCombination();
+      this.disableWeel = false;
+      // let randomStudent = this.generateCombination();
+      let randomStudent = this.currentStudent;
       if (randomStudent) {
         if (!this.expressionCounts[randomStudent.firstName]) {
           this.expressionCounts[randomStudent.firstName] = 0;
@@ -112,6 +126,9 @@ export default {
     saveFinalOverview() {
       localStorage.setItem(localStorageKey, JSON.stringify(this.expressionCounts));
     }
+  },
+  components: {
+    WeelOfFortune,
   },
 };
 </script>
@@ -154,6 +171,9 @@ button {
   height: 50px;
   margin: 1em;
   background-color: palevioletred;
+  border: none;
+  border-radius: 5px;
+  color: white;
 }
 
 #correct,

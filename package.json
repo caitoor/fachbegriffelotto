@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue-fortune-wheel": "^2.1.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.12.16",

@@ -1,0 +1,35 @@
+{
+    "segments": [
+      { "color": "#FF6347", "textColor": "#FFFFFF" },
+      { "color": "#1E90FF", "textColor": "#FFFFFF" },
+      { "color": "#FF4500", "textColor": "#FFFFFF" },
+      { "color": "#32CD32", "textColor": "#000000" },
+      { "color": "#8A2BE2", "textColor": "#FFFFFF" },
+      { "color": "#FFD700", "textColor": "#000000" },
+      { "color": "#00FF7F", "textColor": "#000000" },
+      { "color": "#BA55D3", "textColor": "#FFFFFF" },
+      { "color": "#FFA500", "textColor": "#000000" },
+      { "color": "#6A5ACD", "textColor": "#FFFFFF" },
+      { "color": "#FF69B4", "textColor": "#000000" },
+      { "color": "#00CED1", "textColor": "#000000" },
+      { "color": "#FF1493", "textColor": "#FFFFFF" },
+      { "color": "#48D1CC", "textColor": "#000000" },
+      { "color": "#FFC0CB", "textColor": "#000000" },
+      { "color": "#1E90FF", "textColor": "#FFFFFF" },
+      { "color": "#20B2AA", "textColor": "#000000" },
+      { "color": "#FF8C00", "textColor": "#000000" },
+      { "color": "#9932CC", "textColor": "#FFFFFF" },
+      { "color": "#00FF00", "textColor": "#000000" },
+      { "color": "#FF00FF", "textColor": "#000000" },
+      { "color": "#7B68EE", "textColor": "#FFFFFF" },
+      { "color": "#FFD700", "textColor": "#000000" },
+      { "color": "#00FA9A", "textColor": "#000000" },
+      { "color": "#8B008B", "textColor": "#FFFFFF" },
+      { "color": "#FF6347", "textColor": "#FFFFFF" },
+      { "color": "#2E8B57", "textColor": "#000000" },
+      { "color": "#FF4500", "textColor": "#FFFFFF" },
+      { "color": "#4169E1", "textColor": "#FFFFFF" },
+      { "color": "#FFA500", "textColor": "#000000" }
+    ]
+  }
+  
