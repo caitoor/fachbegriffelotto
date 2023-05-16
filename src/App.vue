@@ -13,12 +13,14 @@
       <div v-for="(count, name) in expressionCounts" :key="name">
         {{ name }}: {{ count }}
       </div>
+      <button @click="saveFinalOverview">Save</button>
     </div>
   </div>
 </template>
 
 <script>
-import students from "@/_examples/students.json";
+import students from "@/data/students.json";
+const localStorageKey = process.env.LOCAL_STORAGE_KEY;
 export default {
   data() {
     return {
@@ -32,6 +34,10 @@ export default {
   mounted() {
     for (let i = 0; i < students.length; i++) {
       this.expressionCounts[students[i].firstName] = 0;
+    }
+    let finalOverview = localStorage.getItem(localStorageKey);
+    if (finalOverview) {
+      this.expressionCounts = JSON.parse(finalOverview);
     }
   },
   methods: {
@@ -56,9 +62,13 @@ export default {
         return;
       }
       let randomStudent = students[Math.floor(Math.random() * students.length)];
-      let randomExpression = this.expressions.find(
-        (exp) => !this.usedExpressions.includes(exp.expression)
-      );
+      let randomExpression;
+
+      // Versuche zufällige Fachbegriffe zu erzeugen, bis man einen noch nicht verwendeten findet.
+      do {
+        randomExpression = this.expressions[Math.floor(Math.random() * this.expressions.length)];
+      } while (this.usedExpressions.includes(randomExpression.expression));
+
       if (!randomExpression) {
         this.allExpressionsUsed = true;
         return;
@@ -72,6 +82,9 @@ export default {
         this.expressionCounts[randomStudent.firstName]++;
       }
     },
+    saveFinalOverview() {
+      localStorage.setItem(localStorageKey, JSON.stringify(this.expressionCounts));
+    }
   },
 };
 </script>
@@ -80,6 +93,7 @@ header {
   display: block;
   height: 100px;
 }
+
 .file-input-container {
   position: relative;
   display: inline-block;
@@ -102,10 +116,12 @@ header {
   color: white;
   cursor: pointer;
 }
+
 .task {
   font-size: 2em;
   font-family: "Comic Sans MS", sans-serif;
 }
+
 button {
   height: 50px;
   width: 400px;

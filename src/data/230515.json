@@ -1,0 +1,127 @@
+[
+    {
+        "expression": "NaN",
+        "description_short": "NaN steht für 'Not a Number' und zeigt an, dass etwas, was eine Zahl sein sollte, es nicht ist.",
+        "description": "In der Programmierung steht NaN für 'Not a Number'. Es ist ein spezieller Wert, der angibt, dass das Ergebnis einer Operation oder Funktion, die normalerweise eine Zahl produzieren sollte, aus irgendeinem Grund keine gültige Zahl ist."
+    },
+    {
+        "expression": "null",
+        "description_short": "Null ist ein spezieller Wert, der 'nichts' oder 'kein Wert' bedeutet.",
+        "description": "In der Programmierung ist null ein spezieller Wert, der verwendet wird, um anzuzeigen, dass eine Variable oder ein Objekt keinen Wert hat. Es ist nicht dasselbe wie 0, da 0 einen Wert darstellt, während null das Fehlen eines Wertes anzeigt."
+    },
+    {
+        "expression": "undefined",
+        "description_short": "Undefined bedeutet, dass eine Variable deklariert, aber noch nicht definiert wurde.",
+        "description": "In der Programmierung bedeutet 'undefined', dass eine Variable deklariert wurde, aber ihr noch kein Wert zugewiesen wurde. Es unterscheidet sich von null, da null das bewusste Fehlen eines Wertes anzeigt, während undefined bedeutet, dass noch kein Wert zugewiesen wurde."
+    },
+    {
+        "expression": "Daemon",
+        "description_short": "Ein Daemon ist ein Computerprogramm, das im Hintergrund läuft, ohne dass der Benutzer direkt eingreift.",
+        "description": "In der Computertechnik ist ein Daemon ein Prozess, der im Hintergrund läuft und verschiedene Dienste bereitstellt, ohne dass der Benutzer direkt eingreifen muss. Daemons überwachen in der Regel andere Aufgaben, führen geplante Aufgaben aus oder reagieren auf bestimmte Ereignisse oder Bedingungen."
+    },
+    {
+        "expression": "package.json",
+        "description_short": "Die package.json-Datei ist eine Datei, die Informationen über ein Node.js-Projekt und seine Abhängigkeiten enthält.",
+        "description": "In Node.js-Projekten ist die package.json-Datei eine wichtige Datei, die verschiedene Informationen über das Projekt enthält. Sie listet unter anderem die Abhängigkeiten des Projekts auf, also andere Pakete, die das Projekt zum Funktionieren benötigt. Sie kann auch Skripte und Metadaten wie die Projektversion und die Autoren enthalten."
+    },
+    {
+        "expression": "npm",
+        "description_short": "Npm steht für 'Node Package Manager' und ist ein Werkzeug zum Installieren und Verwalten von Softwarepaketen in Node.js.",
+        "description": "Npm, kurz für 'Node Package Manager', ist ein Werkzeug, das in Node.js-Projekten verwendet wird, um Softwarepakete zu installieren und zu verwalten. Mit npm können Entwickler Softwarepakete von anderen teilen und verwenden, was die Entwicklung von Projekten erheblich erleichtert."
+    },
+    {
+        "expression": "dependency",
+        "description_short": "Eine Abhängigkeit ist ein Stück Software, das ein Programm oder ein Softwareprojekt benötigt, um richtig zu funktionieren.",
+        "description": "In der Softwareentwicklung bezieht sich eine Abhängigkeit auf ein Softwarepaket oder eine Bibliothek, die ein Programm oder ein Projekt benötigt, um richtig zu funktionieren. Abhängigkeiten werden oft in einer Datei wie 'package.json' aufgelistet und können mit Werkzeugen wie npm automatisch installiert werden."
+    },
+    {
+        "expression": "package-lock.json",
+        "description_short": "Die package-lock.json-Datei ist eine Aufzeichnung der genauen Versionen der Abhängigkeiten, die in einem Node.js-Projekt installiert sind.",
+        "description": "In Node.js-Projekten ist die package-lock.json-Datei eine automatisch generierte Datei, die die genauen Versionen der Abhängigkeiten festhält, die in einem Projekt installiert sind. Dies stellt sicher, dass alle Entwickler und Maschinen, die an dem Projekt arbeiten, genau dieselben Versionen der Abhängigkeiten verwenden, um Inkonsistenzen zu vermeiden."
+    },
+    {
+        "expression": "relationale Datenbank",
+        "description_short": "Eine relationale Datenbank ist eine Art von Datenbank, die Daten in Tabellen speichert, die miteinander in Beziehung stehen können.",
+        "description": "Eine relationale Datenbank ist eine Art von Datenbank, die Daten in Tabellen speichert. Jede Tabelle hat Reihen (die einzelne Datensätze repräsentieren) und Spalten (die verschiedene Attribute der Datensätze repräsentieren). Diese Tabellen können miteinander in Beziehung gesetzt werden, um komplexe Abfragen und Operationen auf den Daten zu ermöglichen."
+    },
+    {
+        "expression": "Datenbankmanagementsystem",
+        "description_short": "Ein Datenbankmanagementsystem ist Software, die zum Erstellen, Verwalten und Interagieren mit Datenbanken verwendet wird.",
+        "description": "Ein Datenbankmanagementsystem (DBMS) ist ein Softwarewerkzeug, das Entwicklern und Administratoren hilft, Datenbanken zu erstellen, zu verwalten und mit ihnen zu interagieren. Es bietet Funktionen zum Einfügen, Aktualisieren, Löschen und Abrufen von Daten sowie zur Verwaltung der Sicherheit und Integrität der Datenbank."
+    },
+    {
+        "expression": "Datenbank",
+        "description_short": "Eine Datenbank ist ein organisierter Satz von Daten, die auf eine Weise gespeichert sind, die effiziente Zugriffe und Änderungen ermöglicht.",
+        "description": "Eine Datenbank ist eine Sammlung von Daten, die so organisiert und gespeichert sind, dass sie effizient abgerufen, eingefügt, aktualisiert und gelöscht werden können. Datenbanken sind ein grundlegender Bestandteil vieler Anwendungen und Websites, da sie die Speicherung und den Zugriff auf große Mengen an Daten ermöglichen."
+    },
+    {
+        "expression": "Persistenz",
+        "description_short": "Persistenz bezieht sich darauf, wie Daten dauerhaft gespeichert und erhalten bleiben.",
+        "description": "Persistenz bezieht sich auf die Fähigkeit, Daten dauerhaft zu speichern und über einen längeren Zeitraum hinweg zu erhalten. Wenn Daten persistent sind, bleiben sie auch nach dem Herunterfahren eines Computers oder dem Beenden einer Anwendung erhalten. Dies wird erreicht, indem die Daten auf einem langlebigen Speichermedium wie einer Festplatte oder einer Datenbank gespeichert werden. Die Persistenz ist entscheidend, um sicherzustellen, dass Daten nicht verloren gehen und bei Bedarf wieder abgerufen werden können."
+    },
+    {
+        "expression": "Primary key",
+        "description_short": "Ein Primary Key ist ein eindeutiger Identifikator für einen Datensatz in einer Datenbanktabelle.",
+        "description": "Ein Primary Key ist ein eindeutiger Identifikator für einen Datensatz in einer Datenbanktabelle. Er dient dazu, einzelne Datensätze eindeutig zu identifizieren und zu unterscheiden. Jeder Datensatz in der Tabelle hat einen eigenen Primary Key, der normalerweise eine eindeutige Nummer oder einen eindeutigen Code darstellt. Der Primary Key wird verwendet, um auf bestimmte Datensätze zuzugreifen oder Beziehungen zwischen verschiedenen Tabellen herzustellen. Er spielt eine wichtige Rolle bei der Integrität und Organisation von Daten in einer Datenbank."
+    },
+    {
+        "expression": "Foreign key",
+        "description_short": "Ein Foreign Key ist ein Verweis auf den Primary Key einer anderen Tabelle und wird verwendet, um Beziehungen zwischen Tabellen herzustellen.",
+        "description": "Ein Foreign Key ist ein Verweis auf den Primary Key einer anderen Tabelle in einer Datenbank. Er wird verwendet, um Beziehungen zwischen Tabellen herzustellen und Daten zu verknüpfen. Der Foreign Key ermöglicht es, Daten aus einer Tabelle mit Daten aus einer anderen Tabelle zu verknüpfen, indem er auf den entsprechenden Primary Key in der anderen Tabelle verweist. Dadurch können komplexe Abfragen und Operationen durchgeführt werden, die auf die Beziehungen zwischen den Tabellen angewiesen sind. Der Foreign Key ist ein wichtiges Konzept in der Datenmodellierung und hilft dabei, die Integrität und Konsistenz der Daten zu wahren."
+    },
+    {
+        "expression": "Datenmodell",
+        "description_short": "Ein Datenmodell ist eine strukturierte Darstellung der Daten und ihrer Beziehungen in einer Datenbank.",
+        "description": "Ein Datenmodell ist eine strukturierte Darstellung der Daten und ihrer Beziehungen in einer Datenbank. Es definiert, wie die Daten organisiert sind und welche Regeln und Einschränkungen auf die Daten angewendet werden. Ein Datenmodell kann verwendet werden, um die verschiedenen Tabellen, Attribute und Beziehungen in einer Datenbank zu beschreiben."
+    },
+    {
+        "expression": "Entität",
+        "description_short": "Eine Entität repräsentiert ein eindeutiges Objekt oder einen eindeutigen Begriff, über den Daten gespeichert werden.",
+        "description": "Eine Entität repräsentiert ein eindeutiges Objekt oder einen eindeutigen Begriff, über den Daten gespeichert werden. In einem Datenmodell kann eine Entität beispielsweise eine Tabelle darstellen, die bestimmte Informationen über ein spezifisches Konzept enthält. Jede Entität hat verschiedene Attribute, die spezifische Eigenschaften oder Merkmale der Entität beschreiben. Zum Beispiel könnte eine Entität 'Kunde' in einer Datenbank Tabelle 'Kunden' repräsentieren und Attribute wie 'Name', 'Adresse' und 'Kontaktinformationen' enthalten."
+    },
+    {
+        "expression": "Attribute",
+        "description_short": "Attribute sind Eigenschaften oder Merkmale einer Entität, die spezifische Informationen über sie enthalten.",
+        "description": "Attribute sind Eigenschaften oder Merkmale einer Entität, die spezifische Informationen über sie enthalten. In einer Datenbank repräsentieren Attribute die Spalten einer Tabelle und definieren, welche Informationen in den Datensätzen gespeichert werden können. Jedes Attribut hat einen Namen und einen Datentyp, der den erlaubten Wertebereich und das Format der Daten festlegt. Zum Beispiel könnte ein Attribut 'Geburtsdatum' in einer Tabelle 'Kunden' das Datum der Geburt eines Kunden speichern. Attribute ermöglichen es, detaillierte Informationen über eine Entität zu erfassen und auf diese zuzugreifen."
+    },
+    {
+        "expression": "Normalisierung",
+        "description_short": "Normalisierung ist ein Prozess in der Datenbankgestaltung, um Daten redundanzfrei und effizient zu organisieren.",
+        "description": "Normalisierung ist ein Prozess in der Datenbankgestaltung, um Daten redundanzfrei und effizient zu organisieren. Durch die Normalisierung werden Daten in verschiedene Tabellen aufgeteilt und Beziehungen zwischen den Tabellen hergestellt. Das Ziel ist es, Datenredundanz zu minimieren, um Speicherplatz zu sparen und die Datenkonsistenz zu verbessern. Die Normalisierung basiert auf bestimmten Regeln und Normalformen, die sicherstellen, dass Daten effizient strukturiert sind und keine inkonsistenten oder widersprüchlichen Informationen enthalten. Durch die Anwendung der Normalisierung können Datenbanken flexibler, wartungsfreundlicher und leistungsfähiger werden."
+    },
+    {
+        "expression": "Redundanz",
+        "description_short": "Redundanz bezieht sich auf die wiederholte Speicherung von gleichen oder ähnlichen Daten in einer Datenbank.",
+        "description": "Redundanz bezieht sich auf die wiederholte Speicherung von gleichen oder ähnlichen Daten in einer Datenbank. Wenn redundante Daten in einer Datenbank vorhanden sind, kann dies zu Problemen wie erhöhtem Speicherbedarf, inkonsistenten Informationen und Schwierigkeiten bei der Datenaktualisierung führen. Die Redundanz sollte vermieden werden, um die Effizienz und Konsistenz der Datenbank zu gewährleisten. Durch den Einsatz von Normalisierung und Beziehungen zwischen Tabellen kann die Redundanz reduziert oder beseitigt werden."
+    },
+    {
+        "expression": "Datenintegrität",
+        "description_short": "Datenintegrität bezieht sich auf die Genauigkeit, Konsistenz und Gültigkeit der Daten in einer Datenbank.",
+        "description": "Datenintegrität bezieht sich auf die Genauigkeit, Konsistenz und Gültigkeit der Daten in einer Datenbank. Daten sollten korrekt und widerspruchsfrei sein, um ihre Integrität zu gewährleisten. Datenintegrität wird durch die Anwendung von Regeln, Einschränkungen und Validierungen erreicht. Beispiele für Maßnahmen zur Gewährleistung der Datenintegrität sind die Verwendung von Primärschlüsseln, Fremdschlüsseln, Datenvalidierung und das Festlegen von Grenzwerten für Datentypen. Durch die Aufrechterhaltung der Datenintegrität können verlässliche und vertrauenswürdige Informationen in der Datenbank gewährleistet werden."
+    },
+    {
+        "expression": "Entity-Relationship-Model",
+        "description_short": "Das Entity-Relationship-Model ist ein Modellierungswerkzeug zur Darstellung von Entitäten, Attributen und Beziehungen in einer Datenbank.",
+        "description": "Das Entity-Relationship-Model ist ein Modellierungswerkzeug zur Darstellung von Entitäten, Attributen und Beziehungen in einer Datenbank. Es bietet eine visuelle Darstellung, wie die verschiedenen Elemente einer Datenbank miteinander in Beziehung stehen. Im Entity-Relationship-Model werden Entitäten als Rechtecke, Attribute als Ellipsen und Beziehungen als Linien dargestellt. Entitäten repräsentieren eindeutige Objekte oder Begriffe, Attribute beschreiben die Eigenschaften der Entitäten, und Beziehungen zeigen Verbindungen und Abhängigkeiten zwischen Entitäten an. Das Entity-Relationship-Model ist ein wichtiges Werkzeug in der Datenmodellierung und hilft dabei, die Struktur und Organisation einer Datenbank zu planen."
+    },
+    {
+        "expression": "Kardinalität",
+        "description_short": "Kardinalität beschreibt die Anzahl der möglichen Beziehungen oder Instanzen zwischen Entitäten in einer Datenbank.",
+        "description": "Kardinalität beschreibt die Anzahl der möglichen Beziehungen oder Instanzen zwischen Entitäten in einer Datenbank. Sie gibt an, wie viele Entitäten einer bestimmten Art mit anderen Entitäten in Beziehung stehen können. Die Kardinalität kann beispielsweise angeben, dass eine Entität eine einzelne Beziehung zu einer anderen Entität hat (1:1), dass eine Entität mehrere Beziehungen zu anderen Entitäten hat (1:n) oder dass eine Entität optional mit anderen Entitäten verbunden sein kann (0:n). Die Kardinalität ist ein wichtiger Aspekt bei der Gestaltung und Modellierung von Datenbankbeziehungen."
+    },
+    {
+        "expression": "EEPROM",
+        "description_short": "EEPROM steht für Electrically Erasable Programmable Read-Only Memory und ist ein Speichertyp, der elektronisch gelöscht und neu programmiert werden kann.",
+        "description": "EEPROM steht für Electrically Erasable Programmable Read-Only Memory und ist ein Speichertyp, der elektronisch gelöscht und neu programmiert werden kann. Im Gegensatz zu herkömmlichen ROM-Speichern kann ein EEPROM elektrisch gelöscht und neu beschrieben werden, ohne dass das gesamte Speichergerät ausgetauscht werden muss. Dieser Speichertyp wird häufig in elektronischen Geräten wie Computern, Mobiltelefonen und Speichermedien verwendet, um Daten dauerhaft zu speichern und zu aktualisieren. EEPROMs sind besonders nützlich für die Speicherung von Konfigurationsdaten, Firmware-Updates und anderen nichtflüchtigen Informationen."
+    },
+    {
+        "expression": "Immutable data",
+        "description_short": "Immutable data bezieht sich auf Daten, die nach ihrer Erstellung nicht verändert werden können.",
+        "description": "Immutable data bezieht sich auf Daten, die nach ihrer Erstellung nicht verändert werden können. Im Gegensatz zu veränderbaren (mutable) Daten, die aktualisiert oder geändert werden können, bleiben immutable Daten unveränderlich. Wenn ein immutable Datenelement einmal erstellt wurde, kann es nicht mehr modifiziert werden. Anstatt Änderungen an einem existierenden immutable Datenelement vorzunehmen, wird normalerweise ein neues Datenelement erstellt, das die gewünschten Änderungen enthält. Immutable data haben den Vorteil, dass sie einfacher zu verstehen, zu teilen und in parallelen Berechnungen zu verwenden sind. Sie bieten auch Vorteile in Bezug auf die Stabilität und Vorhersagbarkeit von Programmen."
+    },
+    {
+        "expression": "Hash",
+        "description_short": "Ein Hash ist eine Funktion, die Eingabedaten in eine eindeutige Zeichenkette fester Länge umwandelt.",
+        "description": "Ein Hash ist eine Funktion, die Eingabedaten in eine eindeutige Zeichenkette fester Länge umwandelt. Diese Funktion wird verwendet, um eine Zusammenfassung (Hashwert) einer Eingabe zu generieren, die als digitaler Fingerabdruck oder Prüfsumme dient. Der Hashwert ist in der Regel eine repräsentative Zeichenkette, die durch eine mathematische Berechnung aus den Eingabedaten erzeugt wird. Die Hash-Funktion ist so konzipiert, dass selbst geringfügige Änderungen in den Eingabedaten zu einem völlig unterschiedlichen Hashwert führen. Dies ermöglicht die schnelle Überprüfung der Integrität von Daten, da eine geringfügige Änderung der Eingabe zu einem deutlich unterschiedlichen Hashwert führen würde. Hash-Funktionen werden in vielen Bereichen eingesetzt, wie beispielsweise bei der Verschlüsselung von Passwörtern, der Datenintegritätsprüfung und dem Indexieren von Datenstrukturen für schnelle Suche und Vergleichsoperationen. Sie bieten eine effiziente Möglichkeit, große Datenmengen eindeutig zu identifizieren und zu verarbeiten."
+    }
+]
