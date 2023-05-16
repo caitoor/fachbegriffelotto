@@ -1,19 +1,23 @@
 <template>
   <div>
     <header>
-      <h1>
-        ☆*:.｡.o(≧▽≦)o.｡.:*☆ Lustiges Fachbegriffe-Lotto ☆*:.｡.o(≧▽≦)o.｡.:*☆
-      </h1>
+      <h1>☆ Lustiges Fachbegriffe-Lotto ☆</h1>
       <input id="file-input" type="file" @change="onFileSelected" />
     </header>
-    <button @click="generateCombination">Generate Combination</button>
+    <button id="start" v-if="!started" @click="generateCombination">☆ START ☆</button>
+    <div v-else>
+      <button id="correct" @click="answerGiven(true)">Richtig</button>
+      <button id="wrong" @click="answerGiven(false)">Falsch</button>
+      <button id="solution" @click="toggleSolution">Lösung</button>
+    </div>
     <p class="task">{{ currentCombination }}</p>
+    <p v-if="showSolution">{{ currentSolution }}</p>
     <p v-if="allExpressionsUsed">All expressions have been used!</p>
     <div v-if="allExpressionsUsed" id="count">
       <div v-for="(count, name) in expressionCounts" :key="name">
         {{ name }}: {{ count }}
       </div>
-      <button @click="saveFinalOverview">Save</button>
+      <button id="save" @click="saveFinalOverview">Save</button>
     </div>
   </div>
 </template>
@@ -29,6 +33,9 @@ export default {
       usedExpressions: [],
       allExpressionsUsed: false,
       expressionCounts: {},
+      started: false,
+      showSolution: false,
+      currentSolution: "",
     };
   },
   mounted() {
@@ -38,6 +45,11 @@ export default {
     let finalOverview = localStorage.getItem(localStorageKey);
     if (finalOverview) {
       this.expressionCounts = JSON.parse(finalOverview);
+      console.log("ranking from localStorage successfully loaded.");
+      console.log(this.expressionCounts);
+    }
+    else {
+      console.log("no ranking found.")
     }
   },
   methods: {
@@ -53,9 +65,13 @@ export default {
       reader.readAsText(file);
     },
     generateCombination() {
+
       if (this.expressions.length === 0) {
         alert("No expressions loaded!");
         return;
+      }
+      else {
+        this.started = true;
       }
       if (this.usedExpressions.length === this.expressions.length) {
         this.allExpressionsUsed = true;
@@ -64,7 +80,6 @@ export default {
       let randomStudent = students[Math.floor(Math.random() * students.length)];
       let randomExpression;
 
-      // Versuche zufällige Fachbegriffe zu erzeugen, bis man einen noch nicht verwendeten findet.
       do {
         randomExpression = this.expressions[Math.floor(Math.random() * this.expressions.length)];
       } while (this.usedExpressions.includes(randomExpression.expression));
@@ -75,13 +90,25 @@ export default {
       }
       this.usedExpressions.push(randomExpression.expression);
       this.currentCombination = `${randomStudent.firstName} ${randomStudent.lastName} - ${randomExpression.expression}`;
-      //counting:
-      if (!this.expressionCounts[randomStudent.firstName]) {
-        this.expressionCounts[randomStudent.firstName] = 1;
-      } else {
-        this.expressionCounts[randomStudent.firstName]++;
+      this.currentSolution = randomExpression.description_short;
+      this.showSolution = false;
+      return randomStudent;
+    },
+
+    toggleSolution() {
+      this.showSolution = !this.showSolution;
+    },
+
+    answerGiven(correct) {
+      let randomStudent = this.generateCombination();
+      if (randomStudent) {
+        if (!this.expressionCounts[randomStudent.firstName]) {
+          this.expressionCounts[randomStudent.firstName] = 0;
+        }
+        this.expressionCounts[randomStudent.firstName] += correct ? 1 : -1;
       }
     },
+
     saveFinalOverview() {
       localStorage.setItem(localStorageKey, JSON.stringify(this.expressionCounts));
     }
@@ -91,6 +118,7 @@ export default {
 <style scoped>
 header {
   display: block;
+  text-overflow: clip;
   height: 100px;
 }
 
@@ -124,6 +152,27 @@ header {
 
 button {
   height: 50px;
+  margin: 1em;
+  background-color: palevioletred;
+}
+
+#correct,
+#wrong {
+  width: 200px;
+
+}
+
+#start,
+#save {
+
   width: 400px;
+}
+
+#correct {
+  background-color: #4caf50;
+}
+
+#wrong {
+  background-color: crimson;
 }
 </style>
