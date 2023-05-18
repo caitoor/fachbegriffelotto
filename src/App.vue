@@ -1,9 +1,6 @@
 <template>
   <div>
-    <header>
-      <h1>☆ Lustiges Fachbegriffe-Lotto ☆</h1>
-      <input id="file-input" type="file" @change="onFileSelected" />
-    </header>
+    <header-component @fileSelected="onFileSelected" />
     <div v-if="!allExpressionsUsed && started">
       <div v-if="currentCombination">
         <button id="correct" @click="answerGiven(true)">Richtig</button>
@@ -31,6 +28,7 @@
 
 <script>
 import students from "@/data/students.json";
+import HeaderComponent from './components/HeaderComponent.vue';
 import WeelOfFortune from "./components/WeelOfFortune.vue";
 const localStorageKey = process.env.VUE_APP_LOCAL_STORAGE_KEY;
 const playSounds = process.env.VUE_APP_PLAY_SOUNDS === 'true';
@@ -163,6 +161,7 @@ export default {
   },
   components: {
     WeelOfFortune,
+    HeaderComponent
   },
 };
 </script>
