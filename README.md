@@ -22,3 +22,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Thanks to
+
+- 8 bit sounds (correct / wrong / time's up): https://freesound.org/people/Breviceps (CC0 licence)
+- spinning sound: https://freesound.org/people/Sheyvan/ (CC0 licence)
