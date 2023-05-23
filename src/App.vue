@@ -18,8 +18,8 @@
     <div v-else-if="started">
       <p>All expressions have been used!</p>
     </div>
-    <scoreboard-component v-if="started && students" :scores="expressionCounts" :allExpressionsUsed="allExpressionsUsed"
-      :students="students" />
+    <scoreboard-component v-if="started && students" :localStorageKey="localStorageKey" :scores="expressionCounts"
+      :allExpressionsUsed="allExpressionsUsed" :students="students" />
   </div>
 </template>
 
@@ -29,7 +29,7 @@ import HeaderComponent from './components/HeaderComponent.vue';
 import CountdownComponent from './components/CountdownComponent.vue'
 import ScoreboardComponent from './components/ScoreboardComponent.vue';
 import WeelOfFortune from "./components/WeelOfFortune.vue";
-
+const localStorageKey = process.env.VUE_APP_LOCAL_STORAGE_KEY;
 const playSounds = process.env.VUE_APP_PLAY_SOUNDS === 'true';
 export default {
   data() {
@@ -46,7 +46,8 @@ export default {
       disableWeel: false,
       students: students,
       expressionCounts: {},
-      countdown: 20
+      countdown: 20,
+      localStorageKey: localStorageKey,
     };
   },
   methods: {

@@ -9,7 +9,6 @@
 </template>
   
 <script>
-const localStorageKey = process.env.VUE_APP_LOCAL_STORAGE_KEY;
 export default {
     name: 'ScoreboardComponent',
     props: {
@@ -23,6 +22,10 @@ export default {
         },
         allExpressionsUsed: {
             type: Boolean,
+            required: true
+        },
+        localStorageKey: {
+            type: String,
             required: true
         },
     },
@@ -41,7 +44,7 @@ export default {
     },
     methods: {
         saveFinalOverview() {
-            localStorage.setItem(localStorageKey, JSON.stringify(this.scores));
+            localStorage.setItem(this.localStorageKey, JSON.stringify(this.scores));
         }
     }
 };
