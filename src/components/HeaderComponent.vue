@@ -18,10 +18,7 @@ export default {
 
 <style scoped>
 header {
-  display: block;
-  text-overflow: clip;
-  height: 100px;
-  grid-area: header;
+  background-color: greenyellow;
 }
 
 h1 {

@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <header-component @fileSelected="onFileSelected" />
+    <header-component class="header-component" @fileSelected="onFileSelected" />
     <div v-if="!allExpressionsUsed && started" id="quiz">
       <p class="task">{{ currentCombination }}</p>
       <p v-if="started">Komplexität: {{ currentExpression.complexity }}</p>
@@ -8,17 +8,18 @@
         <button id="correct" @click="answerGiven(true)">Richtig</button>
         <button id="wrong" @click="answerGiven(false)">Falsch</button>
       </div>
-      <countdown-component :start="countdown" v-if="!allExpressionsUsed && started"
+      <countdown-component class="countdown-component" :start="countdown" v-if="!allExpressionsUsed && started"
         @countdownCompleted="handleCountdownCompleted" />
     </div>
     <div v-else-if="started">
       <p>All expressions have been used!</p>
     </div>
-    <div id="hint"><button id="solution" @click="toggleSolution">Lösung</button></div>
+    <div id="hint" v-if="started"><button id="solution" @click="toggleSolution">Lösung</button></div>
     <p v-if="showSolution">{{ currentSolution }}</p>
-    <scoreboard-component v-if="started && students" :localStorageKey="localStorageKey" :scores="expressionCounts"
-      :allExpressionsUsed="allExpressionsUsed" :students="students" />
-    <weel-of-fortune @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
+    <scoreboard-component class="scoreboard-component" v-if="started && students" :localStorageKey="localStorageKey"
+      :scores="expressionCounts" :allExpressionsUsed="allExpressionsUsed" :students="students" />
+    <weel-of-fortune class="weel-of-fortune" @selection="(msg) => { disableWeel = true; generateCombination(msg) }"
+      :disabled="disableWeel" />
   </div>
 </template>
 
@@ -154,8 +155,24 @@ export default {
   gap: 10px;
 }
 
+.header-component {
+  grid-area: header;
+}
+
 #quiz {
   grid-area: quiz;
+}
+
+.scoreboard-component {
+  grid-area: score;
+}
+
+.countdown-component {
+  grid-area: countdown;
+}
+
+.weel-of-fortune {
+  grid-area: wheel;
 }
 
 .task {
@@ -164,6 +181,7 @@ export default {
 }
 
 button {
+  cursor: pointer;
   height: 50px;
   margin: 1em;
   background-color: palevioletred;
@@ -175,12 +193,10 @@ button {
 #correct,
 #wrong {
   width: 200px;
-
 }
 
 #start,
 #save {
-
   width: 400px;
 }
 

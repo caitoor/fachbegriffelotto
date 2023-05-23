@@ -1,5 +1,5 @@
 <template lang="">
-    <div id="wheel">
+    <div>
     <!-- type: image -->
     <FortuneWheel
     ref="wheelEl"
@@ -92,9 +92,6 @@ export default {
 }
 </script>
 <style scoped>
-#wheel {
-    grid-area: wheel;
-}
 
 .weel-part {
     width: 100%;

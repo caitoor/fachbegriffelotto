@@ -53,7 +53,6 @@ export default {
 <style scoped>
 .scoreboard {
     font-family: "Lucida Handwriting", serif;
-    grid-area: score;
 }
 
 h2 {
