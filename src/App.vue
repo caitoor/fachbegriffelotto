@@ -1,25 +1,24 @@
 <template>
-  <div>
+  <div id="wrapper">
     <header-component @fileSelected="onFileSelected" />
-    <div v-if="!allExpressionsUsed && started">
+    <div v-if="!allExpressionsUsed && started" id="quiz">
+      <p class="task">{{ currentCombination }}</p>
+      <p v-if="started">Komplexität: {{ currentExpression.complexity }}</p>
       <div v-if="currentCombination">
         <button id="correct" @click="answerGiven(true)">Richtig</button>
         <button id="wrong" @click="answerGiven(false)">Falsch</button>
-        <button id="solution" @click="toggleSolution">Lösung</button>
       </div>
-      <p class="task">{{ currentCombination }}</p>
-      <p v-if="started">Komplexität: {{ currentExpression.complexity }}</p>
-      <p v-if="showSolution">{{ currentSolution }}</p>
       <countdown-component :start="countdown" v-if="!allExpressionsUsed && started"
         @countdownCompleted="handleCountdownCompleted" />
-      <weel-of-fortune @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
     </div>
-
     <div v-else-if="started">
       <p>All expressions have been used!</p>
     </div>
+    <div id="hint"><button id="solution" @click="toggleSolution">Lösung</button></div>
+    <p v-if="showSolution">{{ currentSolution }}</p>
     <scoreboard-component v-if="started && students" :localStorageKey="localStorageKey" :scores="expressionCounts"
       :allExpressionsUsed="allExpressionsUsed" :students="students" />
+    <weel-of-fortune @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
   </div>
 </template>
 
@@ -140,6 +139,25 @@ export default {
 };
 </script>
 <style scoped>
+#wrapper {
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr 2fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    "header header header header"
+    "quiz quiz wheel wheel"
+    "countdown score wheel wheel"
+    "hint score wheel wheel";
+  margin: auto;
+  width: 1600px;
+  height: 800px;
+  gap: 10px;
+}
+
+#quiz {
+  grid-area: quiz;
+}
+
 .task {
   font-size: 2em;
   font-family: "Comic Sans MS", sans-serif;

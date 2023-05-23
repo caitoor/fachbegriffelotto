@@ -58,6 +58,7 @@ export default {
 <style scoped>
 .countdown {
     font-size: 3em;
+    grid-area: countdown;
 }
 
 .low-time {

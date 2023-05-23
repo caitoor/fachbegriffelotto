@@ -30,7 +30,7 @@ export default {
         },
     },
     computed: {
-        
+
     },
     mounted() {
         const existingRanking = localStorage.getItem(this.localStorageKey);
@@ -53,6 +53,7 @@ export default {
 <style scoped>
 .scoreboard {
     font-family: "Lucida Handwriting", serif;
+    grid-area: score;
 }
 
 h2 {

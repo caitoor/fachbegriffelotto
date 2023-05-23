@@ -21,6 +21,7 @@ header {
   display: block;
   text-overflow: clip;
   height: 100px;
+  grid-area: header;
 }
 
 h1 {
