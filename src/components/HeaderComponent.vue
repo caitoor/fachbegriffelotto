@@ -23,6 +23,10 @@ header {
   height: 100px;
 }
 
+h1 {
+  font-family: "Matura MT Script Capitals", serif;
+}
+
 .file-input-container {
   position: relative;
   display: inline-block;

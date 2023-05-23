@@ -8,20 +8,18 @@
         <button id="solution" @click="toggleSolution">Lösung</button>
       </div>
       <p class="task">{{ currentCombination }}</p>
-      <p>Komplexität: {{ currentExpression.complexity }}</p>
-      <countdown-component :start="countdown" v-if="!allExpressionsUsed && started" @countdownCompleted="handleCountdownCompleted" />
+      <p v-if="started">Komplexität: {{ currentExpression.complexity }}</p>
       <p v-if="showSolution">{{ currentSolution }}</p>
-      <WeelOfFortune @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
+      <countdown-component :start="countdown" v-if="!allExpressionsUsed && started"
+        @countdownCompleted="handleCountdownCompleted" />
+      <weel-of-fortune @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
     </div>
+
     <div v-else-if="started">
       <p>All expressions have been used!</p>
-      <div id="count">
-        <div v-for="(count, name) in expressionCounts" :key="name">
-          {{ name }}: {{ count }}
-        </div>
-        <button id="save" @click="saveFinalOverview">Save</button>
-      </div>
     </div>
+    <scoreboard-component v-if="started && students" :scores="expressionCounts" :allExpressionsUsed="allExpressionsUsed"
+      :students="students" />
   </div>
 </template>
 
@@ -29,8 +27,9 @@
 import students from "@/data/students.json";
 import HeaderComponent from './components/HeaderComponent.vue';
 import CountdownComponent from './components/CountdownComponent.vue'
+import ScoreboardComponent from './components/ScoreboardComponent.vue';
 import WeelOfFortune from "./components/WeelOfFortune.vue";
-const localStorageKey = process.env.VUE_APP_LOCAL_STORAGE_KEY;
+
 const playSounds = process.env.VUE_APP_PLAY_SOUNDS === 'true';
 export default {
   data() {
@@ -40,29 +39,15 @@ export default {
       currentCombination: "",
       usedExpressions: [],
       allExpressionsUsed: false,
-      expressionCounts: {},
       started: false,
       showSolution: false,
       currentSolution: "",
       currentStudent: {},
       disableWeel: false,
-      countdown: 20,
-      countdownIntervalId: null,
+      students: students,
+      expressionCounts: {},
+      countdown: 20
     };
-  },
-  mounted() {
-    for (let i = 0; i < students.length; i++) {
-      this.expressionCounts[students[i].firstName] = 0;
-    }
-    let finalOverview = localStorage.getItem(localStorageKey);
-    if (finalOverview) {
-      this.expressionCounts = JSON.parse(finalOverview);
-      console.log("ranking from localStorage successfully loaded.");
-      console.log(this.expressionCounts);
-    }
-    else {
-      console.log("no ranking found.")
-    }
   },
   methods: {
     onFileSelected(event) {
@@ -77,6 +62,12 @@ export default {
       }
       reader.readAsText(file);
     },
+
+    initializeScores() {
+      this.students.forEach(student => {
+        this.expressionCounts[student.firstName] = 0;
+      });
+    },
     startGame() {
       if (this.expressions.length === 0) {
         alert("No expressions loaded!");
@@ -85,6 +76,7 @@ export default {
       else {
         this.started = true;
       }
+      this.initializeScores();
       this.disableWeel;
     },
     generateCombination(student) {
@@ -126,32 +118,23 @@ export default {
         audio.play();
       }
     },
-
     answerGiven(correct) {
       this.disableWeel = false;
       let randomStudent = this.currentStudent;
       let currentExpression = this.currentExpression;
-      console.log(currentExpression.expression);
       let points = currentExpression.complexity - (correct ? 0 : 10);
-      console.log(points);
       if (randomStudent) {
-        if (!this.expressionCounts[randomStudent.firstName]) {
-          this.expressionCounts[randomStudent.firstName] = 0;
-        }
         const soundFile = correct ? "correct.wav" : "wrong.wav";
-        this.expressionCounts[randomStudent.firstName] += points;
+        this.expressionCounts[randomStudent.firstName] = (this.expressionCounts[randomStudent.firstName] || 0) + points;
         this.playSound(soundFile);
       }
     },
-
-    saveFinalOverview() {
-      localStorage.setItem(localStorageKey, JSON.stringify(this.expressionCounts));
-    }
   },
   components: {
     WeelOfFortune,
     HeaderComponent,
-    CountdownComponent
+    CountdownComponent,
+    ScoreboardComponent
   },
 };
 </script>

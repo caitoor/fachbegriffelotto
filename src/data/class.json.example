@@ -1,0 +1,15 @@
+{
+    "class": "DP2",
+    "course": "Technische Grundlagen 2",
+    "semester": "SS23",
+    "students": [
+        {
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        {
+            "firstName": "Joelina",
+            "lastName": "Donna"
+        }
+    ]
+}

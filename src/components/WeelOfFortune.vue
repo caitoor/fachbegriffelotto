@@ -39,7 +39,7 @@ export default {
                 borderColor: '#584b43',
                 borderWidth: 6,
                 lineHeight: 30,
-                btnText:"Start",
+                btnText: "Start",
             },
             students: students,
             colors: colors.segments,
@@ -49,9 +49,7 @@ export default {
         }
     },
     created() {
-
         let studentProbability = parseInt(100 / (this.students.length));
-        console.log(studentProbability, this.students.length);
         this.prizesCanvas = this.students.map((student, index) => {
             (index === students.length - 1) ? studentProbability = 100 - (studentProbability * (students.length - 1)) : null;
             return {
@@ -67,15 +65,15 @@ export default {
     },
     methods: {
         onCanvasRotateStart() {
-            console.log('onRotateStart')
+            // console.log('onRotateStart')
         },
         onRotateEnd(prize) {
             this.canvasOptions.btnText = "";
-            this.$emit('selection', students[prize.id-1])
+            this.$emit('selection', students[prize.id - 1])
             this.prizeId = prize.id
         },
     },
-    emits: ['selection','spinWeel'],
+    emits: ['selection', 'spinWeel'],
     props: {
         disabled: {
             type: Boolean,

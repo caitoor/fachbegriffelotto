@@ -1,0 +1,12 @@
+[
+    {
+        "expression": "ROM",
+        "complexity": 2,
+        "description_short": "Read-Only Memory, ein Speichertyp, der nur lesbar ist und Daten auch ohne Stromversorgung behält."
+    },
+    {
+        "expression": "Escape Character",
+        "complexity": 7,
+        "description_short": "Ein spezielles Zeichen, das in der Programmierung verwendet wird, um eine spezielle Bedeutung oder Funktion zu kennzeichnen, z.B. das Backslash-Zeichen '\\'."
+    }
+]
