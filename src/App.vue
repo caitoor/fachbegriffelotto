@@ -9,8 +9,7 @@
       </div>
       <p class="task">{{ currentCombination }}</p>
       <p>Komplexität: {{ currentExpression.complexity }}</p>
-      <p v-if="!allExpressionsUsed && started" :class="{ 'time-up': countdown <= 0 }" class="countdown">{{ countdown }}
-      </p>
+      <countdown-component :start="countdown" v-if="!allExpressionsUsed && started" @countdownCompleted="handleCountdownCompleted" />
       <p v-if="showSolution">{{ currentSolution }}</p>
       <WeelOfFortune @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
     </div>
@@ -29,6 +28,7 @@
 <script>
 import students from "@/data/students.json";
 import HeaderComponent from './components/HeaderComponent.vue';
+import CountdownComponent from './components/CountdownComponent.vue'
 import WeelOfFortune from "./components/WeelOfFortune.vue";
 const localStorageKey = process.env.VUE_APP_LOCAL_STORAGE_KEY;
 const playSounds = process.env.VUE_APP_PLAY_SOUNDS === 'true';
@@ -111,21 +111,11 @@ export default {
       this.currentCombination = `${randomStudent.firstName} ${randomStudent.lastName} erklärt: ${randomExpression.expression}`;
       this.currentSolution = randomExpression.description_short;
       this.showSolution = false;
-      this.startCountdown(10 + randomExpression.complexity * 2);
+      this.countdown = 10 + randomExpression.complexity * 2;
       return randomStudent;
     },
-    startCountdown(time = 20) {
-      if (this.countdownIntervalId) {
-        clearInterval(this.countdownIntervalId);
-      }
-      this.countdown = time;
-      this.countdownIntervalId = setInterval(() => {
-        this.countdown--;
-        if (this.countdown <= 0) {
-          clearInterval(this.countdownIntervalId);
-          this.playSound("timesup.wav");
-        }
-      }, 1000);
+    handleCountdownCompleted() {
+      this.playSound("timesup.wav");
     },
     toggleSolution() {
       this.showSolution = !this.showSolution;
@@ -139,7 +129,6 @@ export default {
 
     answerGiven(correct) {
       this.disableWeel = false;
-      // let randomStudent = this.generateCombination();
       let randomStudent = this.currentStudent;
       let currentExpression = this.currentExpression;
       console.log(currentExpression.expression);
@@ -161,40 +150,12 @@ export default {
   },
   components: {
     WeelOfFortune,
-    HeaderComponent
+    HeaderComponent,
+    CountdownComponent
   },
 };
 </script>
 <style scoped>
-header {
-  display: block;
-  text-overflow: clip;
-  height: 100px;
-}
-
-.file-input-container {
-  position: relative;
-  display: inline-block;
-}
-
-.file-input-container input[type="file"] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-.file-input-container label {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-}
-
 .task {
   font-size: 2em;
   font-family: "Comic Sans MS", sans-serif;
@@ -227,13 +188,5 @@ button {
 
 #wrong {
   background-color: crimson;
-}
-
-.countdown {
-  font-size: 3em;
-}
-
-.time-up {
-  color: red;
 }
 </style>
