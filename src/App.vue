@@ -171,6 +171,10 @@ export default {
   grid-area: countdown;
 }
 
+#hint {
+  grid-area: hint;
+}
+
 .weel-of-fortune {
   grid-area: wheel;
 }

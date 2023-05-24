@@ -1,8 +1,8 @@
 <template>
     <div class="scoreboard">
         <h2>Scoreboard</h2>
-        <div v-for="(count, name) in scores" :key="name">
-            {{ name }}: {{ count }}
+        <div v-for="(item, index) in sortedScores" :key="index">
+            {{ index + 1 }}. {{ item.name }}: {{ item.count }}
         </div>
         <button v-if="allExpressionsUsed" @click="saveFinalOverview">Save</button>
     </div>
@@ -29,22 +29,33 @@ export default {
             required: true
         },
     },
+    data() {
+        return {
+            initialscores: {}
+        };
+    },
     computed: {
+        sortedScores() {
+            return Object.entries(this.scores)
+                .map(([name, count]) => ({ name, count }))
+                .sort((a, b) => b.count - a.count);
+        },
 
     },
+
     mounted() {
-        const existingRanking = localStorage.getItem(this.localStorageKey);
+        const existingRanking = JSON.parse(localStorage.getItem(this.localStorageKey));
         if (existingRanking) {
-            Object.assign(this.scores, JSON.parse(existingRanking));
+            this.initialScores = { ...existingRanking };
             console.log("Ranking from localStorage successfully loaded.");
-            console.log(this.scores);
         } else {
             console.log("No ranking found.");
+
         }
     },
     methods: {
         saveFinalOverview() {
-            localStorage.setItem(this.localStorageKey, JSON.stringify(this.scores));
+            localStorage.setItem(this.localStorageKey, JSON.stringify(this.localScores));
         }
     }
 };
@@ -58,5 +69,8 @@ export default {
 h2 {
     font-family: "Algerian", serif;
 }
+
+.score-change {
+    font-size: 12px;
+}
 </style>
-  
