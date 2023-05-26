@@ -123,7 +123,10 @@ export default {
       this.disableWeel = false;
       let randomStudent = this.currentStudent;
       let currentExpression = this.currentExpression;
-      let points = currentExpression.complexity - (correct ? 0 : 10);
+      let points = currentExpression.complexity
+      if (!correct) {
+        points = Math.round((points - 10) / 2);
+      }
       if (randomStudent) {
         const soundFile = correct ? "correct.wav" : "wrong.wav";
         this.expressionCounts[randomStudent.firstName] = (this.expressionCounts[randomStudent.firstName] || 0) + points;

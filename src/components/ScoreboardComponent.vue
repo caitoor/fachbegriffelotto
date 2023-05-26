@@ -64,6 +64,9 @@ export default {
 <style scoped>
 .scoreboard {
     font-family: "Lucida Handwriting", serif;
+    background-image: url('~@/assets/scroll.jpg');
+    background-size: cover;
+    padding:50px 90px;
 }
 
 h2 {
