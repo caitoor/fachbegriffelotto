@@ -1,0 +1,107 @@
+[
+    {
+        "expression": "Regular Expressions",
+        "complexity": 8,
+        "description_short": "Reguläre Ausdrücke sind Muster, die zum Abgleich und zur Manipulation von Zeichenketten in der Textverarbeitung verwendet werden."
+    },
+    {
+        "expression": "OSI-Layers",
+        "complexity": 7,
+        "description_short": "Die OSI-Schichten sind ein konzeptionelles Modell, das die Funktionen eines Kommunikationssystems in sieben abstrakte Kategorien (Schichten) unterteilt."
+    },
+    {
+        "expression": "REST-API",
+        "complexity": 6,
+        "description_short": "Eine REST-API ist eine Schnittstelle, die auf den Prinzipien des REST (Representational State Transfer) Protokolls basiert und es ermöglicht, Web-Dienste auf einfache und standardisierte Weise zu nutzen."
+    },
+    {
+        "expression": "HTTP-Request",
+        "complexity": 5,
+        "description_short": "Ein HTTP-Request ist eine Nachricht, die ein Client an einen Server sendet, um eine bestimmte Aktion durchzuführen, zum Beispiel eine Webseite abzurufen oder Daten zu senden."
+    },
+    {
+        "expression": "express",
+        "complexity": 6,
+        "description_short": "Express ist ein minimalistisches Web-Anwendungsframework für Node.js, das die Erstellung von Web- und mobilen Anwendungen erleichtert."
+    },
+    {
+        "expression": "get/put/delete/post",
+        "complexity": 4,
+        "description_short": "GET, PUT, DELETE und POST sind HTTP-Methoden, die angeben, welche Aktion auf einer Ressource, wie z.B. einer Webseite, durchgeführt werden soll."
+    },
+    {
+        "expression": "well known ports",
+        "complexity": 5,
+        "description_short": "Well-known Ports sind Port-Nummern, die für bestimmte, allgemein bekannte Dienste reserviert sind, z.B. HTTP auf Port 80 oder HTTPS auf Port 443."
+    },
+    {
+        "expression": "Error Handling",
+        "complexity": 3,
+        "description_short": "Error Handling bezeichnet das Erkennen, Abfangen und Behandeln von Fehlern während der Laufzeit eines Programms."
+    },
+    {
+        "expression": "Endpunkt",
+        "complexity": 4,
+        "description_short": "Ein Endpunkt in der Informatik bezeichnet im Allgemeinen den Ort, an dem die Kommunikation zwischen verschiedenen Systemen stattfindet."
+    },
+    {
+        "expression": "Postman",
+        "complexity": 4,
+        "description_short": "Postman ist ein beliebtes Tool, das Entwicklern hilft, APIs zu testen und zu dokumentieren."
+    },
+    {
+        "expression": "HTTP Statuscodes",
+        "complexity": 5,
+        "description_short": "HTTP-Statuscodes sind dreistellige Nummern, die von Webservern gesendet werden, um den Status und das Ergebnis einer HTTP-Anfrage zu beschreiben."
+    },
+    {
+        "expression": "Arrow Operator",
+        "complexity": 2,
+        "description_short": "Der Arrow Operator ('=>') ist eine kompakte Syntax, um anonyme Funktionen in JavaScript und einigen anderen Programmiersprachen zu erstellen."
+    },
+    {
+        "expression": "Anonyme Funktionen",
+        "complexity": 3,
+        "description_short": "Anonyme Funktionen sind Funktionen ohne Namen, die in vielen Programmiersprachen für einmalige, nicht wiederverwendbare Aufgaben verwendet werden."
+    },
+    {
+        "expression": "Promise",
+        "complexity": 6,
+        "description_short": "Ein Promise in JavaScript repräsentiert einen zukünftigen Wert, der noch nicht bekannt ist, und bietet Methoden, um auf das Eintreten oder Nicht-Eintreten dieses zukünftigen Ereignisses zu reagieren."
+    },
+    {
+        "expression": "Top Level Domain",
+        "complexity": 2,
+        "description_short": "Eine Top-Level-Domain (TLD) ist der letzte Teil eines Domain-Namens, wie '.com', '.org' oder '.de'."
+    },
+    {
+        "expression": "Denic",
+        "complexity": 3,
+        "description_short": "Denic ist die zentrale Registrierungsstelle für alle Domains der Top-Level-Domain '.de'."
+    },
+    {
+        "expression": "Query Parameters",
+        "complexity": 4,
+        "description_short": "Query-Parameter sind Schlüssel-Wert-Paare, die an das Ende einer URL angehängt werden, um zusätzliche Daten an den Webserver zu übermitteln."
+    },
+    {
+        "expression": "TypeScript",
+        "complexity": 5,
+        "description_short": "TypeScript ist eine von Microsoft entwickelte Programmiersprache, die als Erweiterung von JavaScript entworfen wurde und statische Typen und andere Funktionen hinzufügt."
+    },
+    {
+        "expression": "Wireshark",
+        "complexity": 4,
+        "description_short": "Wireshark ist ein beliebtes Open-Source-Tool zur Netzwerkanalyse und -überwachung."
+    },
+    {
+        "expression": "Webbrowser",
+        "complexity": 1,
+        "description_short": "Ein Webbrowser ist eine Softwareanwendung, die zum Abrufen, Darstellen und Navigieren von Informationen auf dem World Wide Web verwendet wird."
+      },
+      {
+        "expression": "Backpropagation",
+        "complexity": 10,
+        "description_short": "Backpropagation ist ein Algorithmus in neuronalen Netzen, der den Fehler von der Ausgabe zurück zum Eingang propagiert, um die Gewichte der Verbindungen für zukünftige Vorhersagen anzupassen."
+      }
+]
