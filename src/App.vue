@@ -3,6 +3,7 @@
     <header-component class="header-component" @fileSelected="onFileSelected" />
     <div v-if="!allExpressionsUsed && started" id="quiz">
       <p class="task">{{ currentCombination }}</p>
+      <p>Nr. {{ usedExpressionsCount }} / {{ totalExpressions }}</p>
       <p v-if="started">Komplexität: {{ currentExpression.complexity }}</p>
       <div v-if="currentCombination">
         <button id="correct" @click="answerGiven(true)">Richtig</button>
@@ -14,8 +15,10 @@
     <div v-else-if="started">
       <p>All expressions have been used!</p>
     </div>
-    <div id="hint" v-if="started"><button id="solution" @click="toggleSolution">Lösung</button></div>
-    <p v-if="showSolution">{{ currentSolution }}</p>
+    <div id="hint" v-if="started">
+      <button id="solution" @click="toggleSolution">Lösung</button>
+      <p v-if="showSolution">{{ currentSolution }}</p>
+    </div>
     <scoreboard-component class="scoreboard-component" v-if="started && students" :localStorageKey="localStorageKey"
       :scores="expressionCounts" :allExpressionsUsed="allExpressionsUsed" :students="students" />
     <weel-of-fortune class="weel-of-fortune" @selection="(msg) => { disableWeel = true; generateCombination(msg) }"
@@ -50,16 +53,30 @@ export default {
       localStorageKey: localStorageKey,
     };
   },
+  computed: {
+    totalExpressions() {
+      return this.expressions.length;
+    },
+    usedExpressionsCount() {
+      return this.usedExpressions.length;
+    },
+  },
   methods: {
     onFileSelected(event) {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = (event) => {
-        const data = JSON.parse(event.target.result);
-        this.expressions = data;
-        this.usedExpressions = [];
-        this.allExpressionsUsed = false;
-        this.startGame();
+        try {
+          const data = JSON.parse(event.target.result);
+          this.expressions = data;
+          this.usedExpressions = [];
+          this.allExpressionsUsed = false;
+          this.startGame();
+        }
+        catch (error) {
+          alert("Die geladene Datei ist keine gültige JSON-Datei.");
+          console.log("error");
+        }
       }
       reader.readAsText(file);
     },
@@ -180,6 +197,7 @@ export default {
 
 .weel-of-fortune {
   grid-area: wheel;
+  font-family: "Comic Sans MS", serif;
 }
 
 .task {

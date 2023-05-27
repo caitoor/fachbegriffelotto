@@ -92,7 +92,6 @@ export default {
 }
 </script>
 <style scoped>
-
 .weel-part {
     width: 100%;
     height: 100%;
