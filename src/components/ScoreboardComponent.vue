@@ -1,8 +1,8 @@
 <template>
     <div class="scoreboard">
         <h2>Scoreboard</h2>
-        <div v-for="(item, index) in sortedScores" :key="index">
-            {{ index + 1 }}. {{ item.name }}: {{ item.count }}
+        <div v-for="(value, name, index) in sortedScores" :key="name">
+            {{ index + 1 }}. {{ name }}: {{ value }} ({{ scoreChanges[name] >= 0 ? '+' : '' }}{{ scoreChanges[name] }})
         </div>
         <button v-if="allExpressionsUsed" @click="saveFinalOverview">Save</button>
     </div>
@@ -13,6 +13,10 @@ export default {
     name: 'ScoreboardComponent',
     props: {
         scores: {
+            type: Object,
+            required: true
+        },
+        initialScores: {
             type: Object,
             required: true
         },
@@ -29,33 +33,22 @@ export default {
             required: true
         },
     },
-    data() {
-        return {
-            initialscores: {}
-        };
-    },
     computed: {
         sortedScores() {
-            return Object.entries(this.scores)
-                .map(([name, count]) => ({ name, count }))
-                .sort((a, b) => b.count - a.count);
+            const sortedEntries = Object.entries(this.scores).sort((a, b) => b[1] - a[1]);
+            return Object.fromEntries(sortedEntries);
         },
-
-    },
-
-    mounted() {
-        const existingRanking = JSON.parse(localStorage.getItem(this.localStorageKey));
-        if (existingRanking) {
-            this.initialScores = { ...existingRanking };
-            console.log("Ranking from localStorage successfully loaded.");
-        } else {
-            console.log("No ranking found.");
-
+        scoreChanges() {
+        let changes = {};
+        for (let name in this.scores) {
+            changes[name] = this.scores[name] - this.initialScores[name];
         }
+        return changes;
+    }
     },
     methods: {
         saveFinalOverview() {
-            localStorage.setItem(this.localStorageKey, JSON.stringify(this.localScores));
+            localStorage.setItem(this.localStorageKey, JSON.stringify(this.sortedScores));
         }
     }
 };
@@ -66,7 +59,7 @@ export default {
     font-family: "Lucida Handwriting", serif;
     background-image: url('~@/assets/scroll.jpg');
     background-size: cover;
-    padding:50px 90px;
+    padding: 50px 90px;
 }
 
 h2 {

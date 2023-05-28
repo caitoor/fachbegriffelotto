@@ -1,26 +1,16 @@
 <template>
   <div id="wrapper">
     <header-component class="header-component" @fileSelected="onFileSelected" />
-    <div v-if="!allExpressionsUsed && started" id="quiz">
-      <p class="task">{{ currentCombination }}</p>
-      <p>Nr. {{ usedExpressionsCount }} / {{ totalExpressions }}</p>
-      <p v-if="started">Komplexität: {{ currentExpression.complexity }}</p>
-      <div v-if="currentCombination">
-        <button id="correct" @click="answerGiven(true)">Richtig</button>
-        <button id="wrong" @click="answerGiven(false)">Falsch</button>
-      </div>
-      <countdown-component class="countdown-component" :start="countdown" v-if="!allExpressionsUsed && started"
-        @countdownCompleted="handleCountdownCompleted" />
-    </div>
-    <div v-else-if="started">
-      <p>All expressions have been used!</p>
-    </div>
+    <quiz-component v-if="started" class="quiz-component" :all-expressions-used="allExpressionsUsed" :started="started"
+      :current-combination="currentCombination" :used-expressions-count="usedExpressions.length"
+      :total-expressions="expressions.length" :current-expression="currentExpression" :countdown="countdown"
+      @answerGiven="answerGiven" @countdownCompleted="handleCountdownCompleted" />
     <div id="hint" v-if="started">
       <button id="solution" @click="toggleSolution">Lösung</button>
       <p v-if="showSolution">{{ currentSolution }}</p>
     </div>
     <scoreboard-component class="scoreboard-component" v-if="started && students" :localStorageKey="localStorageKey"
-      :scores="expressionCounts" :allExpressionsUsed="allExpressionsUsed" :students="students" />
+      :scores="scores" :initial-scores="initialScores" :allExpressionsUsed="allExpressionsUsed" :students="students" />
     <weel-of-fortune class="weel-of-fortune" @selection="(msg) => { disableWeel = true; generateCombination(msg) }"
       :disabled="disableWeel" />
   </div>
@@ -29,7 +19,7 @@
 <script>
 import students from "@/data/students.json";
 import HeaderComponent from './components/HeaderComponent.vue';
-import CountdownComponent from './components/CountdownComponent.vue'
+import QuizComponent from './components/QuizComponent';
 import ScoreboardComponent from './components/ScoreboardComponent.vue';
 import WeelOfFortune from "./components/WeelOfFortune.vue";
 const localStorageKey = process.env.VUE_APP_LOCAL_STORAGE_KEY;
@@ -48,9 +38,10 @@ export default {
       currentStudent: {},
       disableWeel: false,
       students: students,
-      expressionCounts: {},
+      scores: {},
       countdown: 20,
       localStorageKey: localStorageKey,
+      initialScores: {}
     };
   },
   computed: {
@@ -60,6 +51,22 @@ export default {
     usedExpressionsCount() {
       return this.usedExpressions.length;
     },
+  },
+  mounted() {
+    const existingRankingData = localStorage.getItem(this.localStorageKey);
+    if (existingRankingData) {
+      const existingRanking = JSON.parse(existingRankingData);
+      if (existingRanking) {
+        this.initialScores = existingRanking;
+        this.scores = existingRanking;
+        console.log("Ranking from localStorage successfully loaded.");
+      } else {
+        console.log("No ranking found.");
+        this.initializeScores();
+      }
+    } else {
+      console.log("No data in localStorage.");
+    }
   },
   methods: {
     onFileSelected(event) {
@@ -82,9 +89,15 @@ export default {
     },
 
     initializeScores() {
-      this.students.forEach(student => {
-        this.expressionCounts[student.firstName] = 0;
-      });
+      if (Object.entries(this.scores).length === 0) {
+        this.students.forEach(student => {
+          this.scores[student.firstName] = 0;
+          this.initialScores[student.firstName] = 0;
+        });
+      }
+      else {
+        console.log("won't set scores to zero.");
+      }
     },
     startGame() {
       if (this.expressions.length === 0) {
@@ -146,7 +159,7 @@ export default {
       }
       if (randomStudent) {
         const soundFile = correct ? "correct.wav" : "wrong.wav";
-        this.expressionCounts[randomStudent.firstName] = (this.expressionCounts[randomStudent.firstName] || 0) + points;
+        this.scores[randomStudent.firstName] = (this.scores[randomStudent.firstName] || 0) + points;
         this.playSound(soundFile);
       }
     },
@@ -154,12 +167,12 @@ export default {
   components: {
     WeelOfFortune,
     HeaderComponent,
-    CountdownComponent,
-    ScoreboardComponent
+    ScoreboardComponent,
+    QuizComponent,
   },
 };
 </script>
-<style scoped>
+<style>
 #wrapper {
   display: grid;
   grid-template-rows: 1fr 3fr 1fr 2fr;
@@ -179,7 +192,7 @@ export default {
   grid-area: header;
 }
 
-#quiz {
+.quiz-component {
   grid-area: quiz;
 }
 
@@ -200,11 +213,6 @@ export default {
   font-family: "Comic Sans MS", serif;
 }
 
-.task {
-  font-size: 2em;
-  font-family: "Comic Sans MS", sans-serif;
-}
-
 button {
   cursor: pointer;
   height: 50px;
@@ -215,21 +223,15 @@ button {
   color: white;
 }
 
-#correct,
-#wrong {
-  width: 200px;
-}
+
 
 #start,
 #save {
   width: 400px;
 }
 
-#correct {
-  background-color: #4caf50;
-}
-
+#correct,
 #wrong {
-  background-color: crimson;
+  width: 200px;
 }
 </style>
