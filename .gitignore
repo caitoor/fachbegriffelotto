@@ -22,5 +22,6 @@ pnpm-debug.log*
 *.sw?
 
 src/data/students.json
+src/data/class.json
 src/data/dp2_tg2_ss23.json
 .env

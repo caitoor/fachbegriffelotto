@@ -11,13 +11,13 @@
     </div>
     <scoreboard-component class="scoreboard-component" v-if="started && students" :localStorageKey="localStorageKey"
       :scores="scores" :initial-scores="initialScores" :allExpressionsUsed="allExpressionsUsed" :students="students" />
-    <weel-of-fortune class="weel-of-fortune" @selection="(msg) => { disableWeel = true; generateCombination(msg) }"
-      :disabled="disableWeel" />
+    <weel-of-fortune class="weel-of-fortune" :students="this.course.students"
+      @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
   </div>
 </template>
 
 <script>
-import students from "@/data/students.json";
+import course from "@/data/class.json";
 import HeaderComponent from './components/HeaderComponent.vue';
 import QuizComponent from './components/QuizComponent';
 import ScoreboardComponent from './components/ScoreboardComponent.vue';
@@ -35,9 +35,11 @@ export default {
       started: false,
       showSolution: false,
       currentSolution: "",
+      currentStudentId: "",
       currentStudent: {},
       disableWeel: false,
-      students: students,
+      students: {},
+      course: course,
       scores: {},
       countdown: 20,
       localStorageKey: localStorageKey,
@@ -53,6 +55,16 @@ export default {
     },
   },
   mounted() {
+    // change students structure from array to object where the combination of first and last name build a more or less unique identifier
+    let studs = this.course.students;
+    let studObj = {};
+    studs.forEach(student => {
+      const key = student.firstName + "_" + student.lastName;
+      studObj[key] = { ...student };
+    });
+    this.students = { ...studObj };
+
+    // load existing scores or initialize new ones if none are found
     const existingRankingData = localStorage.getItem(this.localStorageKey);
     if (existingRankingData) {
       const existingRanking = JSON.parse(existingRankingData);
@@ -90,10 +102,10 @@ export default {
 
     initializeScores() {
       if (Object.entries(this.scores).length === 0) {
-        this.students.forEach(student => {
-          this.scores[student.firstName] = 0;
-          this.initialScores[student.firstName] = 0;
-        });
+        for (let studId in this.students) {
+          this.scores[studId] = 0;
+          this.initialScores[studId] = 0;
+        }
       }
       else {
         console.log("won't set scores to zero.");
@@ -110,14 +122,20 @@ export default {
       this.initializeScores();
       this.disableWeel;
     },
-    generateCombination(student) {
-
+    generateCombination(studentID) {
       if (this.usedExpressions.length === this.expressions.length) {
         this.allExpressionsUsed = true;
         return;
       }
       this.playSound("spin.wav");
-      let randomStudent = student || students[Math.floor(Math.random() * students.length)];
+
+      const studentIds = Object.keys(this.students);
+      const randomIndex = Math.floor(Math.random() * studentIds.length);
+      const randomStudentId = studentIds[randomIndex];
+      let randomStudent = this.students[studentID] || this.students[randomStudentId]
+      // let randomStudent = student || students[Math.floor(Math.random() * students.length)];
+      this.currentStudentId = studentID;
+      console.log(this.curren)
       this.currentStudent = randomStudent;
       let randomExpression;
 
@@ -134,7 +152,7 @@ export default {
       this.currentCombination = `${randomStudent.firstName} ${randomStudent.lastName} erklärt: ${randomExpression.expression}`;
       this.currentSolution = randomExpression.description_short;
       this.showSolution = false;
-      this.countdown = 10 + randomExpression.complexity * 2;
+      this.countdown = Math.floor(10 + randomExpression.complexity * 1.5);
       return randomStudent;
     },
     handleCountdownCompleted() {
@@ -159,7 +177,7 @@ export default {
       }
       if (randomStudent) {
         const soundFile = correct ? "correct.wav" : "wrong.wav";
-        this.scores[randomStudent.firstName] = (this.scores[randomStudent.firstName] || 0) + points;
+        this.scores[this.currentStudentId] = (this.scores[this.currentStudentId] || 0) + points;
         this.playSound(soundFile);
       }
     },

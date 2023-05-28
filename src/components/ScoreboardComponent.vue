@@ -1,8 +1,11 @@
 <template>
     <div class="scoreboard">
         <h2>Scoreboard</h2>
-        <div v-for="(value, name, index) in sortedScores" :key="name">
-            {{ index + 1 }}. {{ name }}: {{ value }} ({{ scoreChanges[name] >= 0 ? '+' : '' }}{{ scoreChanges[name] }})
+        <div v-for="(value, key, index) in sortedScores" :key="index">
+            {{ index + 1 }}. {{ students[key].firstName }}: {{ value }}
+            <span v-if="scoreChanges[key] !== 0">
+                ({{ scoreChanges[key] > 0 ? '+' : '' }}{{ scoreChanges[key] }})
+            </span>
         </div>
         <button v-if="allExpressionsUsed" @click="saveFinalOverview">Save</button>
     </div>
@@ -39,12 +42,12 @@ export default {
             return Object.fromEntries(sortedEntries);
         },
         scoreChanges() {
-        let changes = {};
-        for (let name in this.scores) {
-            changes[name] = this.scores[name] - this.initialScores[name];
+            let changes = {};
+            for (let studId in this.scores) {
+                changes[studId] = this.scores[studId] - this.initialScores[studId];
+            }
+            return changes;
         }
-        return changes;
-    }
     },
     methods: {
         saveFinalOverview() {
