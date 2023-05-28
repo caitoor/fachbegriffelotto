@@ -57,8 +57,8 @@ export default {
     if (existingRankingData) {
       const existingRanking = JSON.parse(existingRankingData);
       if (existingRanking) {
-        this.initialScores = existingRanking;
-        this.scores = existingRanking;
+        this.initialScores = JSON.parse(JSON.stringify(existingRanking));
+        this.scores = JSON.parse(JSON.stringify(existingRanking));
         console.log("Ranking from localStorage successfully loaded.");
       } else {
         console.log("No ranking found.");
