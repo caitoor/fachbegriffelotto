@@ -1,8 +1,8 @@
 <template>
     <div class="scoreboard">
         <h2>Scoreboard</h2>
-        <div v-for="(value, key, index) in sortedScores" :key="index">
-            {{ index + 1 }}. {{ students[key].firstName }}: {{ value }}
+        <div v-for="{ rank, key, value } in sortedScoresWithRank" :key="key">
+            {{ rank }}. {{ students[key].firstName }}: {{ value }}
             <span v-if="scoreChanges[key] !== 0">
                 ({{ scoreChanges[key] > 0 ? '+' : '' }}{{ scoreChanges[key] }})
             </span>
@@ -51,7 +51,21 @@ export default {
                 changes[studId] = this.scores[studId] - this.initialScores[studId];
             }
             return changes;
+        },
+        sortedScoresWithRank() {
+        const rankedScores = [];
+        let rank = 1, index = 1;
+        let prevScore = null;
+        for (let [key, value] of Object.entries(this.sortedScores)) {
+            if (prevScore != null && prevScore != value) {
+                rank = index;
+            }
+            rankedScores.push({rank, key, value});
+            prevScore = value;
+            index++;
         }
+        return rankedScores;
+    },
     },
     methods: {
         saveFinalOverview() {
