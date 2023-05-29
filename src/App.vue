@@ -1,6 +1,7 @@
 <template>
   <div id="wrapper">
-    <header-component class="header-component" @fileSelected="onFileSelected" />
+    <header-component class="header-component" @expressionsSelected="onExpressionsSelected" :course="course"
+      @courseSelected="onCourseSelected" />
     <quiz-component v-if="started" class="quiz-component" :all-expressions-used="allExpressionsUsed" :started="started"
       :current-combination="currentCombination" :used-expressions-count="usedExpressions.length"
       :total-expressions="expressions.length" :current-expression="currentExpression" :countdown="countdown"
@@ -10,14 +11,15 @@
       <p v-if="showSolution">{{ currentSolution }}</p>
     </div>
     <scoreboard-component class="scoreboard-component" v-if="started && students" :localStorageKey="localStorageKey"
-      :scores="scores" :initial-scores="initialScores" :allExpressionsUsed="allExpressionsUsed" :students="students" />
-    <weel-of-fortune class="weel-of-fortune" :students="this.course.students"
+      :scores="scores" :initial-scores="initialScores" :allExpressionsUsed="allExpressionsUsed" :students="students"
+      :course-key="courseKey" />
+    <weel-of-fortune v-if="started && students" class="weel-of-fortune" :students="this.course.students"
       @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
   </div>
 </template>
 
 <script>
-import course from "@/data/class.json";
+//import course from "@/data/class.json";
 import HeaderComponent from './components/HeaderComponent.vue';
 import QuizComponent from './components/QuizComponent';
 import ScoreboardComponent from './components/ScoreboardComponent.vue';
@@ -39,11 +41,12 @@ export default {
       currentStudent: {},
       disableWeel: false,
       students: {},
-      course: course,
+      course: {},
       scores: {},
       countdown: 20,
       localStorageKey: localStorageKey,
-      initialScores: {}
+      initialScores: {},
+      courseKey: ""
     };
   },
   computed: {
@@ -55,33 +58,24 @@ export default {
     },
   },
   mounted() {
-    // change students structure from array to object where the combination of first and last name build a more or less unique identifier
-    let studs = this.course.students;
-    let studObj = {};
-    studs.forEach(student => {
-      const key = student.firstName + "_" + student.lastName;
-      studObj[key] = { ...student };
-    });
-    this.students = { ...studObj };
-
-    // load existing scores or initialize new ones if none are found
-    const existingRankingData = localStorage.getItem(this.localStorageKey);
-    if (existingRankingData) {
-      const existingRanking = JSON.parse(existingRankingData);
-      if (existingRanking) {
-        this.initialScores = JSON.parse(JSON.stringify(existingRanking));
-        this.scores = JSON.parse(JSON.stringify(existingRanking));
-        console.log("Ranking from localStorage successfully loaded.");
+    //load lastly used class
+    const existingCourseData = localStorage.getItem(this.localStorageKey + "_course");
+    if (existingCourseData) {
+      const existingCourse = JSON.parse(existingCourseData);
+      if (existingCourse) {
+        this.course = JSON.parse(JSON.stringify(existingCourse));
+        this.initializeCourse();
+        console.log("Course from localStorage successfully loaded.");
+        this.initializeCourseScores();
       } else {
-        console.log("No ranking found.");
-        this.initializeScores();
+        console.log("No course found.");
       }
     } else {
-      console.log("No data in localStorage.");
+      console.log("No course data in localStorage.");
     }
   },
   methods: {
-    onFileSelected(event) {
+    onExpressionsSelected(event) {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -93,13 +87,41 @@ export default {
           this.startGame();
         }
         catch (error) {
-          alert("Die geladene Datei ist keine gültige JSON-Datei.");
+          alert("Die geladene Datei ist keine gültige JSON-Fachbegriffe-Datei.");
           console.log("error");
         }
       }
       reader.readAsText(file);
     },
-
+    onCourseSelected(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target.result);
+          localStorage.setItem(this.localStorageKey + "_course", JSON.stringify(data));
+          this.course = data;
+          this.initializeCourse();
+          this.initializeCourseScores();
+        }
+        catch (error) {
+          alert("Die geladene Datei ist keine gültige JSON-Kurs-Datei.");
+          console.log("error");
+        }
+      }
+      reader.readAsText(file);
+    },
+    initializeCourse() {
+      // change students structure from array to object where the combination of first and last name build a more or less unique identifier
+      this.courseKey = (this.course.class + "_" + this.course.course + "_" + this.course.semester).toLowerCase().replace(/\s/g, '')
+      let studs = this.course.students;
+      let studObj = {};
+      studs.forEach(student => {
+        const key = student.firstName + "_" + student.lastName;
+        studObj[key] = { ...student };
+      });
+      this.students = { ...studObj };
+    },
     initializeScores() {
       if (Object.entries(this.scores).length === 0) {
         for (let studId in this.students) {
@@ -111,6 +133,23 @@ export default {
         console.log("won't set scores to zero.");
       }
     },
+    initializeCourseScores() {
+      const existingRankingData = localStorage.getItem(this.localStorageKey + "_ranking_" + this.courseKey);
+      if (existingRankingData) {
+        const existingRanking = JSON.parse(existingRankingData);
+        if (existingRanking) {
+          this.initialScores = JSON.parse(JSON.stringify(existingRanking));
+          this.scores = JSON.parse(JSON.stringify(existingRanking));
+          console.log("Ranking from localStorage successfully loaded.");
+        } else {
+          console.log("No ranking found.");
+          this.initializeScores();
+        }
+      } else {
+        console.log("No ranking data in localStorage.");
+      }
+    },
+
     startGame() {
       if (this.expressions.length === 0) {
         alert("No expressions loaded!");
@@ -135,7 +174,7 @@ export default {
       let randomStudent = this.students[studentID] || this.students[randomStudentId]
       // let randomStudent = student || students[Math.floor(Math.random() * students.length)];
       this.currentStudentId = studentID;
-      console.log(this.curren)
+      console.log(studentID);
       this.currentStudent = randomStudent;
       let randomExpression;
 
@@ -155,18 +194,6 @@ export default {
       this.countdown = Math.floor(10 + randomExpression.complexity * 1.5);
       return randomStudent;
     },
-    handleCountdownCompleted() {
-      this.playSound("timesup.wav");
-    },
-    toggleSolution() {
-      this.showSolution = !this.showSolution;
-    },
-    playSound(fileName) {
-      if (playSounds) {
-        const audio = new Audio(require(`@/assets/${fileName}`));
-        audio.play();
-      }
-    },
     answerGiven(correct) {
       this.disableWeel = false;
       let randomStudent = this.currentStudent;
@@ -179,6 +206,18 @@ export default {
         const soundFile = correct ? "correct.wav" : "wrong.wav";
         this.scores[this.currentStudentId] = (this.scores[this.currentStudentId] || 0) + points;
         this.playSound(soundFile);
+      }
+    },
+    handleCountdownCompleted() {
+      this.playSound("timesup.wav");
+    },
+    toggleSolution() {
+      this.showSolution = !this.showSolution;
+    },
+    playSound(fileName) {
+      if (playSounds) {
+        const audio = new Audio(require(`@/assets/${fileName}`));
+        audio.play();
       }
     },
   },
@@ -202,7 +241,7 @@ export default {
     "hint score wheel wheel";
   margin: auto;
   width: 1600px;
-  height: 800px;
+  max-height: 900px;
   gap: 10px;
 }
 

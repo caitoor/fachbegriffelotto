@@ -35,6 +35,10 @@ export default {
             type: String,
             required: true
         },
+        courseKey: {
+            type: String,
+            required: false
+        }
     },
     computed: {
         sortedScores() {
@@ -51,7 +55,7 @@ export default {
     },
     methods: {
         saveFinalOverview() {
-            localStorage.setItem(this.localStorageKey, JSON.stringify(this.sortedScores));
+            localStorage.setItem(this.localStorageKey + "_ranking_" + this.courseKey, JSON.stringify(this.sortedScores));
         }
     }
 };

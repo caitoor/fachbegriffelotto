@@ -1,18 +1,38 @@
 <template>
   <header>
-    <h1>☆ Lustiges Fachbegriffe-Lotto ☆</h1>
-    <input id="file-input" type="file" @change="handleFileSelect" />
+    <h2>☆ Lustiges Fachbegriffe-Lotto ☆</h2>
+    <h3>{{ courseHeadline }}</h3>
+    <span>Kurs:</span><input id="file-input" type="file" @change="handleCourseSelect" />
+    <span>Begriffe laden:</span><input id="file-input" type="file" @change="handleExpressionsSelect" />
   </header>
 </template>
   
 <script>
 export default {
   name: 'HeaderComponent',
-  methods: {
-    handleFileSelect(event) {
-      this.$emit('fileSelected', event);
+  props: {
+    course: {
+      type: Object,
+      required: false
     }
   },
+  methods: {
+    handleCourseSelect(event) {
+      this.$emit('courseSelected', event);
+    },
+    handleExpressionsSelect(event) {
+      this.$emit('expressionsSelected', event);
+    }
+  },
+  computed: {
+    courseHeadline() {
+      let headline = "no course loaded."
+      if (Object.entries(this.course).length > 0) {
+        headline = this.course.class + " | " + this.course.course + " | " + this.course.semester;
+      }
+      return headline;
+    }
+  }
 }
 </script>
 
@@ -21,7 +41,7 @@ header {
   background-color: greenyellow;
 }
 
-h1 {
+h2 {
   font-family: "Matura MT Script Capitals", serif;
 }
 
