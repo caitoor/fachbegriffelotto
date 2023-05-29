@@ -112,7 +112,6 @@ export default {
       reader.readAsText(file);
     },
     initializeCourse() {
-      // change students structure from array to object where the combination of first and last name build a more or less unique identifier
       this.courseKey = (this.course.class + "_" + this.course.course + "_" + this.course.semester).toLowerCase().replace(/\s/g, '')
       let studs = this.course.students;
       let studObj = {};
@@ -172,9 +171,7 @@ export default {
       const randomIndex = Math.floor(Math.random() * studentIds.length);
       const randomStudentId = studentIds[randomIndex];
       let randomStudent = this.students[studentID] || this.students[randomStudentId]
-      // let randomStudent = student || students[Math.floor(Math.random() * students.length)];
       this.currentStudentId = studentID;
-      console.log(studentID);
       this.currentStudent = randomStudent;
       let randomExpression;
 

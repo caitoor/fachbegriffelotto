@@ -1,13 +1,38 @@
 <template>
     <div class="scoreboard">
         <h2>Scoreboard</h2>
-        <div v-for="{ rank, key, value } in sortedScoresWithRank" :key="key">
-            {{ rank }}. {{ students[key].firstName }}: {{ value }}
-            <span v-if="scoreChanges[key] !== 0">
-                ({{ scoreChanges[key] > 0 ? '+' : '' }}{{ scoreChanges[key] }})
-            </span>
-        </div>
-        <button v-if="allExpressionsUsed" @click="saveFinalOverview">Save</button>
+        <table>
+            <thead>
+                <tr>
+                    <th class="rank-change"></th>
+                    <th>Rang</th>
+                    <th>Name</th>
+                    <th>Punkte</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="{ rank, key, value } in sortedScoresWithRank" :key="key">
+                    <td>
+                        <span class="rank-change" :class="{
+                                'better': rankChanges[key] < 0,
+                                'worse': rankChanges[key] > 0,
+                            }">
+                            {{ rankChanges[key] < 0 ? '▴' : rankChanges[key] > 0 ? '▾' : '' }}
+                        </span>
+                    </td>
+                    <td>{{ rank }}</td>
+                    <td>{{ students[key].firstName }}</td>
+                    <td>{{ value }}</td>
+                    <td>
+                        <span class="score-change" v-if="scoreChanges[key] !== 0">
+                            {{ scoreChanges[key] > 0 ? '+' : '' }}{{ scoreChanges[key] }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button v-if="allExpressionsUsed" @click="saveScoresToLocalStorage">Save</button>
     </div>
 </template>
   
@@ -40,6 +65,14 @@ export default {
             required: false
         }
     },
+    data() {
+        return {
+            initialRankings: {},
+        };
+    },
+    mounted() {
+        this.saveInitialRankings();
+    },
     computed: {
         sortedScores() {
             const sortedEntries = Object.entries(this.scores).sort((a, b) => b[1] - a[1]);
@@ -53,22 +86,38 @@ export default {
             return changes;
         },
         sortedScoresWithRank() {
-        const rankedScores = [];
-        let rank = 1, index = 1;
-        let prevScore = null;
-        for (let [key, value] of Object.entries(this.sortedScores)) {
-            if (prevScore != null && prevScore != value) {
-                rank = index;
+            const rankedScores = [];
+            let rank = 1, index = 1;
+            let prevScore = null;
+            for (let [key, value] of Object.entries(this.sortedScores)) {
+                if (prevScore != null && prevScore != value) {
+                    rank = index;
+                }
+                rankedScores.push({ rank, key, value });
+                prevScore = value;
+                index++;
             }
-            rankedScores.push({rank, key, value});
-            prevScore = value;
-            index++;
-        }
-        return rankedScores;
-    },
+            return rankedScores;
+        },
+        rankChanges() {
+            const changes = {};
+            for (let { rank, key } of this.sortedScoresWithRank) {
+                if (this.initialRankings[key] !== undefined) {
+                    changes[key] = rank - this.initialRankings[key];
+                }
+            }
+            return changes;
+        },
     },
     methods: {
-        saveFinalOverview() {
+        saveInitialRankings() {
+            for (let { rank, key } of this.sortedScoresWithRank) {
+                if (this.initialRankings[key] === undefined) {
+                    this.initialRankings[key] = rank;
+                }
+            }
+        },
+        saveScoresToLocalStorage() {
             localStorage.setItem(this.localStorageKey + "_ranking_" + this.courseKey, JSON.stringify(this.sortedScores));
         }
     }
@@ -88,6 +137,40 @@ h2 {
 }
 
 .score-change {
-    font-size: 12px;
+    font-size: 1em;
+}
+
+table {
+    border-collapse: collapse;
+
+}
+
+thead {
+    background-color: #ffffff40;
+    display: none;
+}
+
+th,
+td {
+    padding: 0 3px;
+    border: none;
+    text-align: left;
+}
+
+.rank-change {
+    width: 10px;
+    padding: 0;
+}
+
+.rank-change.better {
+    color: green;
+}
+
+.rank-change.worse {
+    color: red;
+}
+
+.score-change {
+    font-size: 0.6em;
 }
 </style>
