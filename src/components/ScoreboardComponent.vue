@@ -9,10 +9,12 @@
                     <th>Name</th>
                     <th>Punkte</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="{ rank, key, value } in sortedScoresWithRank" :key="key">
+                <tr v-for="{ rank, key, value } in sortedScoresWithRank" :key="key" @mouseover="showPercentage[key] = true"
+                    @mouseout="showPercentage[key] = false">
                     <td>
                         <span class="rank-change" :class="{
                                 'better': rankChanges[key] < 0,
@@ -28,6 +30,13 @@
                         <span class="score-change" v-if="scoreChanges[key] !== 0">
                             {{ scoreChanges[key] > 0 ? '+' : '' }}{{ scoreChanges[key] }}
                         </span>
+                    </td>
+                    <td class="score-change pointer" v-if="studentStatsChanges[key].attemptsChange !== 0">
+                        <div v-if="!showPercentage[key]">
+                            <span>{{ studentStatsChanges[key].correctChange }}</span>/<span>{{
+                                studentStatsChanges[key].attemptsChange }}</span>
+                        </div>
+                        <span v-if="showPercentage[key]">{{ studentStatsChanges[key].percentageChange.toFixed(0) }}%</span>
                     </td>
                 </tr>
             </tbody>
@@ -63,11 +72,20 @@ export default {
         courseKey: {
             type: String,
             required: false
-        }
+        },
+        initialStudentStats: {
+            type: Object,
+            required: true
+        },
+        studentStats: {
+            type: Object,
+            required: true
+        },
     },
     data() {
         return {
             initialRankings: {},
+            showPercentage: {},
         };
     },
     mounted() {
@@ -108,6 +126,22 @@ export default {
             }
             return changes;
         },
+        studentStatsChanges() {
+            const changes = {};
+            for (let key in this.studentStats) {
+                const initialStats = this.initialStudentStats[key] || { attempts: 0, correct: 0 };
+                const currentStats = this.studentStats[key];
+                const attemptsChange = currentStats.attempts - initialStats.attempts;
+                const correctChange = currentStats.correct - initialStats.correct;
+                const percentageChange = attemptsChange > 0 ? (correctChange / attemptsChange) * 100 : 0;
+                changes[key] = {
+                    attemptsChange,
+                    correctChange,
+                    percentageChange,
+                };
+            }
+            return changes;
+        }
     },
     methods: {
         saveInitialRankings() {
@@ -119,6 +153,7 @@ export default {
         },
         saveScoresToLocalStorage() {
             localStorage.setItem(this.localStorageKey + "_ranking_" + this.courseKey, JSON.stringify(this.sortedScores));
+            localStorage.setItem(this.localStorageKey + "_studentStats_" + this.courseKey, JSON.stringify(this.studentStats));
         }
     }
 };
@@ -150,6 +185,10 @@ thead {
     display: none;
 }
 
+table tbody tr:hover {
+    background-color: rgba(255, 255, 255, .5);
+}
+
 th,
 td {
     padding: 0 3px;
@@ -171,6 +210,10 @@ td {
 }
 
 .score-change {
-    font-size: 0.6em;
+    font-size: 0.7em;
+}
+
+.pointer {
+    cursor: pointer;
 }
 </style>

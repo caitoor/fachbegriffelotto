@@ -11,7 +11,8 @@
       <p v-if="showSolution">{{ currentSolution }}</p>
     </div>
     <scoreboard-component class="scoreboard-component" v-if="started && students" :localStorageKey="localStorageKey"
-      :scores="scores" :initial-scores="initialScores" :allExpressionsUsed="allExpressionsUsed" :students="students"
+      :scores="scores" :initial-scores="initialScores" :student-stats="studentStats"
+      :initialStudentStats="initialStudentStats" :allExpressionsUsed="allExpressionsUsed" :students="students"
       :course-key="courseKey" />
     <weel-of-fortune v-if="started && students" class="weel-of-fortune" :students="this.course.students"
       @selection="(msg) => { disableWeel = true; generateCombination(msg) }" :disabled="disableWeel" />
@@ -29,24 +30,26 @@ const playSounds = process.env.VUE_APP_PLAY_SOUNDS === 'true';
 export default {
   data() {
     return {
+      localStorageKey: localStorageKey,
+      started: false,
+      disableWeel: false,
+      showSolution: false,
+      countdown: 20,
       expressions: [],
-      currentExpression: {},
-      currentCombination: "",
       usedExpressions: [],
       allExpressionsUsed: false,
-      started: false,
-      showSolution: false,
       currentSolution: "",
       currentStudentId: "",
       currentStudent: {},
-      disableWeel: false,
+      currentExpression: {},
+      currentCombination: "",
       students: {},
       course: {},
+      courseKey: "",
       scores: {},
-      countdown: 20,
-      localStorageKey: localStorageKey,
       initialScores: {},
-      courseKey: ""
+      studentStats: {},
+      initialStudentStats: {}
     };
   },
   computed: {
@@ -118,6 +121,7 @@ export default {
       studs.forEach(student => {
         const key = student.firstName + "_" + student.lastName;
         studObj[key] = { ...student };
+        this.studentStats[key] = { attempts: 0, correct: 0 };
       });
       this.students = { ...studObj };
     },
@@ -146,6 +150,19 @@ export default {
         }
       } else {
         console.log("No ranking data in localStorage.");
+      }
+      const existingStudentStatsData = localStorage.getItem(this.localStorageKey + "_studentStats_" + this.courseKey);
+      if (existingStudentStatsData) {
+        const existingStudentStats = JSON.parse(existingStudentStatsData);
+        if (existingStudentStats) {
+          this.studentStats = JSON.parse(JSON.stringify(existingStudentStats));
+          this.initialStudentStats = JSON.parse(JSON.stringify(existingStudentStats));
+          console.log("StudentStats from localStorage successfully loaded.");
+        } else {
+          console.log("No studentStats found.");
+        }
+      } else {
+        console.log("No studentStats data in localStorage.");
       }
     },
 
@@ -195,13 +212,17 @@ export default {
       this.disableWeel = false;
       let randomStudent = this.currentStudent;
       let currentExpression = this.currentExpression;
-      let points = currentExpression.complexity
+      let points = currentExpression.complexity;
       if (!correct) {
         points = Math.round((points - 10) / 2);
       }
       if (randomStudent) {
         const soundFile = correct ? "correct.wav" : "wrong.wav";
         this.scores[this.currentStudentId] = (this.scores[this.currentStudentId] || 0) + points;
+        this.studentStats[this.currentStudentId].attempts += 1;
+        if (correct) {
+          this.studentStats[this.currentStudentId].correct += 1;
+        }
         this.playSound(soundFile);
       }
     },
@@ -276,8 +297,6 @@ button {
   border-radius: 5px;
   color: white;
 }
-
-
 
 #start,
 #save {
