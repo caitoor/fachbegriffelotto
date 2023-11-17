@@ -17,9 +17,9 @@
                     @mouseout="showPercentage[key] = false">
                     <td>
                         <span class="rank-change" :class="{
-                                'better': rankChanges[key] < 0,
-                                'worse': rankChanges[key] > 0,
-                            }">
+                            'better': rankChanges[key] < 0,
+                            'worse': rankChanges[key] > 0,
+                        }">
                             {{ rankChanges[key] < 0 ? '▴' : rankChanges[key] > 0 ? '▾' : '' }}
                         </span>
                     </td>
@@ -165,6 +165,24 @@ export default {
     background-image: url('~@/assets/scroll.jpg');
     background-size: cover;
     padding: 50px 90px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.scoreboard::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scoreboard::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.scoreboard::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.scoreboard::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 h2 {
