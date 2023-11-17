@@ -5,7 +5,7 @@
     <quiz-component v-if="started" class="quiz-component" :all-expressions-used="allExpressionsUsed" :started="started"
       :current-combination="currentCombination" :used-expressions-count="usedExpressions.length"
       :total-expressions="expressions.length" :current-expression="currentExpression" :countdown="countdown"
-      @answerGiven="answerGiven" @countdownCompleted="handleCountdownCompleted" />
+      @answerGiven="answerGiven" @countdownCompleted="handleCountdownCompleted" @rerollStudent="rerollStudent" />
     <div id="hint" v-if="started">
       <button id="solution" @click="toggleSolution">Lösung</button>
       <p v-if="showSolution">{{ currentSolution }}</p>
@@ -25,9 +25,10 @@ import HeaderComponent from './components/HeaderComponent.vue';
 import QuizComponent from './components/QuizComponent';
 import ScoreboardComponent from './components/ScoreboardComponent.vue';
 import WeelOfFortune from "./components/WeelOfFortune.vue";
+import soundPlayer from './mixins/soundPlayer';
 const localStorageKey = process.env.VUE_APP_LOCAL_STORAGE_KEY;
-const playSounds = process.env.VUE_APP_PLAY_SOUNDS === 'true';
 export default {
+  mixins: [soundPlayer],
   data() {
     return {
       localStorageKey: localStorageKey,
@@ -49,7 +50,8 @@ export default {
       scores: {},
       initialScores: {},
       studentStats: {},
-      initialStudentStats: {}
+      initialStudentStats: {},
+      playSounds: process.env.VUE_APP_PLAY_SOUNDS === 'true',
     };
   },
   computed: {
@@ -232,12 +234,24 @@ export default {
     toggleSolution() {
       this.showSolution = !this.showSolution;
     },
-    playSound(fileName) {
-      if (playSounds) {
-        const audio = new Audio(require(`@/assets/${fileName}`));
-        audio.play();
-      }
+    rerollStudent() {
+      this.playSound("spin.wav");
+      this.generateStudent();
     },
+
+    generateStudent() {
+      const studentIds = Object.keys(this.students);
+      let randomIndex;
+      let randomStudentId;
+      do {
+        randomIndex = Math.floor(Math.random() * studentIds.length);
+        randomStudentId = studentIds[randomIndex];
+      } while (randomStudentId === this.currentStudentId);
+
+      this.currentStudentId = randomStudentId;
+      this.currentStudent = this.students[randomStudentId];
+      this.currentCombination = `${this.currentStudent.firstName} ${this.currentStudent.lastName} erklärt: ${this.currentExpression.expression}`;
+    }
   },
   components: {
     WeelOfFortune,

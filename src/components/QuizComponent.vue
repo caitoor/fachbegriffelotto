@@ -6,6 +6,7 @@
         <div v-if="currentCombination">
             <button id="correct" @click="$emit('answerGiven', true)">Richtig</button>
             <button id="wrong" @click="$emit('answerGiven', false)">Falsch</button>
+            <button id="reroll" @click="$emit('rerollStudent')">Reroll Student</button> 
         </div>
         <countdown-component class="countdown-component" :start="countdown" v-if="!allExpressionsUsed && started"
             @countdownCompleted="$emit('countdownCompleted')" />
